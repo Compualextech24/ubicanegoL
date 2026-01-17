@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ubicanegoleon - Directorio de Negocios en León, Gto.</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            color: #ffffff;
+        }
+        
+        .glass {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .glass-dark {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #f9d67a 50%, #d4af37 100%);
+        }
+        
+        .gold-text {
+            background: linear-gradient(135deg, #d4af37 0%, #f9d67a 50%, #d4af37 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .metallic-btn {
+            background: linear-gradient(135deg, #d4af37 0%, #f9d67a 50%, #d4af37 100%);
+            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .metallic-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+        
+        .metallic-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.6), inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+        
+        .metallic-outline-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .metallic-outline-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(212, 175, 55, 0.3);
+        }
+        
+        .input-focus {
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+        
+        .input-focus:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+        
+        .input-focus::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #d4af37;
+            transition: all 0.3s ease;
+        }
+        
+        .password-toggle:hover {
+            color: #f9d67a;
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .pulse-gold {
+            animation: pulseGold 2s infinite;
+        }
+        
+        @keyframes pulseGold {
+            0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.8); }
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const SUPABASE_URL = 'https://igastcafgjwijvgvcclr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlnYXN0Y2FmZ2p3aWp2Z3ZjY2xyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODkzMjMsImV4cCI6MjA4NDE2NTMyM30.GQxFvm76xHzKj3px7HBtehi5EOOpSQvqk26DAkt2Tz4';
+        
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: {
+                redirectTo: window.location.href,
+                autoRefreshToken: true,
+                persistSession: true
+            }
+        });
+
+        let appState = {
+            view: 'login',
+            user: null,
+            businesses: [],
+            currentBusiness: null,
+            searchTerm: '',
+            viewCount: 2149,
+            keepLoggedIn: false,
+            selectedRating: 0,
+            formData: {
+                name: '', 
+                representative: '', 
+                category: '', 
+                address: '',
+                phone: '+52 477 ', 
+                hours: '', 
+                days: 'Lunes a Viernes',
+                description: '', 
+                logo: null, 
+                logo_url: '',
+                agreed: false
+            }
+        };
+
+        async function loginUser(email, password) {
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                appState.user = data.user;
+                return { success: true };
+            } catch (error) {
+                return { success: false, message: error.message };
+            }
+        }
+
+        async function registerUser(email, password) {
+            try {
+                const { data, error } = await supabaseClient.auth.signUp({ 
+                    email, 
+                    password,
+                    options: { emailRedirectTo: window.location.href }
+                });
+                if (error) throw error;
+                return { success: true, message: 'Cuenta creada. Revisa tu correo para confirmar.' };
+            } catch (error) {
+                return { success: false, message: error.message };
+            }
+        }
+
+        async function logoutUser() {
+            await supabaseClient.auth.signOut();
+            appState.user = null;
+            appState.view = 'login';
+            localStorage.removeItem('keepLoggedIn');
+            renderApp();
+        }
+
+        async function resetPassword(email) {
+            try {
+                const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                    redirectTo: window.location.href
+                });
+                if (error) throw error;
+                return { success: true, message: 'Revisa tu correo para restablecer contraseña.' };
+            } catch (error) {
+                return { success: false, message: error.message };
+            }
+        }
+
+        async function loadAllBusinesses() {
+            try {
+                const { data, error } = await supabaseClient
+                    .from('businesses')
+                    .select(`*, reviews(id, rating, comment, user_name, created_at)`)
+                    .order('created_at', { ascending: false });
+                
+                if (error) throw error;
+                
+                appState.businesses = (data || []).map(business => {
+                    const reviews = business.reviews || [];
+                    const avgRating = reviews.length > 0 
+                        ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
+                        : 0;
+                    
+                    return { ...business, rating: avgRating, total_ratings: reviews.length };
+                });
+            } catch (error) {
+                console.error('Error cargando negocios:', error);
+                showNotification('Error al cargar negocios', 'error');
+            }
+        }
+
+        async function saveBusinessData(formData) {
+            if (!formData.agreed) {
+                showNotification('Debes confirmar que los datos son reales', 'error');
+                return;
+            }
+            
+            const phoneRegex = /^\+52\s?477\s?\d{3}\s?\d{4}$/;
+            if (!phoneRegex.test(formData.phone)) {
+                showNotification('El teléfono debe tener formato: +52 477 XXX XXXX', 'error');
+                return;
+            }
+
+            try {
+                let logoUrl = formData.logo_url;
+
+                if (formData.logo && formData.logo instanceof File) {
+                    const fileExt = formData.logo.name.split('.').pop();
+                    const fileName = `${appState.user.id}/${Date.now()}.${fileExt}`;
+                    
+                    const { error: uploadError } = await supabaseClient.storage
+                        .from('business-logos')
+                        .upload(fileName, formData.logo, { cacheControl: '3600', upsert: false });
+
+                    if (uploadError) throw uploadError;
+                    
+                    const { data: urlData } = supabaseClient.storage
+                        .from('business-logos')
+                        .getPublicUrl(fileName);
+                    
+                    logoUrl = urlData.publicUrl;
+                }
+
+                const businessData = {
+                    name: formData.name.trim(),
+                    representative: formData.representative.trim() || null,
+                    category: formData.category.trim() || null,
+                    address: formData.address.trim(),
+                    phone: formData.phone.trim(),
+                    hours: formData.hours.trim() || null,
+                    days: formData.days,
+                    description: formData.description.trim() || null,
+                    logo_url: logoUrl,
+                    city: 'León, Guanajuato',
+                    user_id: appState.user.id
+                };
+
+                if (appState.currentBusiness) {
+                    const { error } = await supabaseClient
+                        .from('businesses')
+                        .update(businessData)
+                        .eq('id', appState.currentBusiness.id);
+                    
+                    if (error) throw error;
+                    showNotification('Negocio actualizado exitosamente', 'success');
+                } else {
+                    const { error } = await supabaseClient
+                        .from('businesses')
+                        .insert([businessData]);
+                    
+                    if (error) throw error;
+                    showNotification('Negocio registrado exitosamente', 'success');
+                }
+
+                await loadAllBusinesses();
+                appState.view = 'list';
+                appState.currentBusiness = null;
+                resetFormData();
+                renderApp();
+            } catch (error) {
+                showNotification('Error al guardar: ' + error.message, 'error');
+            }
+        }
+
+        async function deleteBusinessData(id) {
+            if (!confirm('¿Eliminar este negocio? Esta acción no se puede deshacer.')) return;
+            
+            try {
+                const { error } = await supabaseClient.from('businesses').delete().eq('id', id);
+                if (error) throw error;
+                
+                await loadAllBusinesses();
+                appState.view = 'list';
+                showNotification('Negocio eliminado', 'success');
+                renderApp();
+            } catch (error) {
+                showNotification('Error al eliminar: ' + error.message, 'error');
+            }
+        }
+
+        async function saveReviewData(businessId, rating, comment) {
+            if (!appState.user) {
+                showNotification('Debes iniciar sesión para dejar una reseña', 'error');
+                return;
+            }
+
+            if (rating === 0) {
+                showNotification('Selecciona una calificación', 'error');
+                return;
+            }
+
+            try {
+                const { error } = await supabaseClient.from('reviews').insert([{
+                    business_id: businessId,
+                    user_id: appState.user.id,
+                    user_name: appState.user.email.split('@')[0],
+                    rating: rating,
+                    comment: comment.trim()
+                }]);
+
+                if (error) throw error;
+                
+                await loadAllBusinesses();
+                appState.selectedRating = 0;
+                showNotification('Reseña publicada', 'success');
+                renderApp();
+            } catch (error) {
+                showNotification('Error al guardar reseña: ' + error.message, 'error');
+            }
+        }
+
+        async function updateViewCounterData() {
+            setInterval(() => {
+                const increment = Math.floor(Math.random() * 3) + 1;
+                appState.viewCount += increment;
+                updateCounterDisplay();
+            }, 12000);
+        }
+
+        function updateCounterDisplay() {
+            const el = document.getElementById('view-counter');
+            if (el) el.textContent = appState.viewCount.toLocaleString();
+        }
+
+        function showNotification(message, type = 'info') {
+            const colors = { 
+                success: 'linear-gradient(135deg, #10b981 0%, #059669 100%)', 
+                error: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)', 
+                info: 'linear-gradient(135deg, #d4af37 0%, #f9d67a 100%)' 
+            };
+            const n = document.createElement('div');
+            n.style.background = colors[type];
+            n.className = 'fixed top-6 right-6 text-white px-6 py-4 rounded-2xl shadow-2xl z-50 fade-in';
+            n.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+            n.innerHTML = `<div class="flex items-center gap-3"><i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i><span class="font-medium">${message}</span></div>`;
+            document.body.appendChild(n);
+            setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 300); }, 4000);
+        }
+
+        function resetFormData() {
+            appState.formData = {
+                name: '', representative: '', category: '', address: '', phone: '+52 477 ', 
+                hours: '', days: 'Lunes a Viernes', description: '', logo: null, logo_url: '', agreed: false
+            };
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(inputId + '-icon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function HeaderComponent() {
+            return `
+                <header class="glass-dark sticky top-0 z-40 shadow-2xl border-b border-white/10">
+                    <div class="max-w-7xl mx-auto px-6 py-5">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-4">
+                                <div class="w-14 h-14 gold-gradient rounded-2xl flex items-center justify-center shadow-xl pulse-gold">
+                                    <i class="fas fa-store text-2xl text-black"></i>
+                                </div>
+                                <div>
+                                    <h1 class="text-2xl font-bold gold-text">Ubicanegoleon</h1>
+                                    <p class="text-xs text-gray-400">León, Guanajuato</p>
+                                </div>
+                            </div>
+                            
+                            <nav class="flex items-center gap-3">
+                                ${appState.view !== 'login' && appState.view !== 'register' ? `
+                                    <button onclick="changeViewTo('list')" class="p-3 rounded-xl hover:bg-white/10 transition-all ${appState.view === 'list' ? 'bg-white/10 text-[#d4af37]' : 'text-gray-400'}">
+                                        <i class="fas fa-home text-lg"></i>
+                                    </button>
+                                ` : ''}
+                                
+                                ${appState.user ? `
+                                    <button onclick="createNewBusiness()" class="metallic-btn text-black px-6 py-3 rounded-xl font-bold shadow-xl hidden md:flex items-center gap-2">
+                                        <i class="fas fa-plus"></i><span>Nuevo Negocio</span>
+                                    </button>
+                                    <button onclick="createNewBusiness()" class="metallic-btn text-black p-3 rounded-xl shadow-xl md:hidden">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                    <div class="relative group">
+                                        <button class="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-white/10 transition-all">
+                                            <div class="w-10 h-10 gold-gradient rounded-full flex items-center justify-center text-black font-bold">
+                                                ${appState.user.email.charAt(0).toUpperCase()}
+                                            </div>
+                                            <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                                        </button>
+                                        <div class="absolute right-0 mt-2 w-56 glass-dark rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                                            <div class="p-4 border-b border-white/10">
+                                                <p class="text-sm font-semibold text-white">${appState.user.email}</p>
+                                                <p class="text-xs text-gray-400 mt-1">Usuario registrado</p>
+                                            </div>
+                                            <button onclick="logoutUser()" class="w-full px-4 py-3 text-left text-red-400 hover:bg-red-500/10 rounded-b-2xl transition-all flex items-center gap-3">
+                                                <i class="fas fa-sign-out-alt"></i><span class="font-medium">Cerrar sesión</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                ` : `
+                                    ${appState.view !== 'login' && appState.view !== 'register' ? `
+                                        <button onclick="changeViewTo('login')" class="metallic-outline-btn px-6 py-2.5 rounded-xl font-bold transition-all text-[#d4af37]">Iniciar Sesión</button>
+                                    ` : ''}
+                                `}
+                            </nav>
+                        </div>
+                    </div>
+                </header>
+            `;
+        }
+
+        function FooterCounterComponent() {
+            return `
+                <div class="fixed bottom-0 left-0 right-0 glass-dark border-t border-white/10 py-5 z-40 shadow-2xl">
+                    <div class="max-w-7xl mx-auto px-6">
+                        <div class="flex items-center justify-center gap-4">
+                            <div class="w-12 h-12 gold-gradient rounded-full flex items-center justify-center pulse-gold shadow-xl">
+                                <i class="fas fa-users text-black text-lg"></i>
+                            </div>
+                            <p class="text-gray-300 font-medium">
+                                Tu negocio puede alcanzar <span class="gold-text font-bold text-2xl" id="view-counter">${appState.viewCount.toLocaleString()}</span> <span class="text-gray-400">usuarios</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function LoginViewComponent() {
+            const isLogin = appState.view === 'login';
+            return `
+                <div class="min-h-screen flex items-center justify-center p-6">
+                    <div class="max-w-md w-full">
+                        <div class="glass-dark p-10 rounded-3xl shadow-2xl fade-in border border-white/10">
+                            <div class="text-center mb-8">
+                                <div class="w-24 h-24 gold-gradient rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl pulse-gold">
+                                    <i class="fas fa-store text-4xl text-black"></i>
+                                </div>
+                                <h2 class="text-4xl font-bold gold-text mb-2">Ubicanegoleon</h2>
+                                <p class="text-gray-400">${isLogin ? 'Bienvenido de nuevo' : 'Crea tu cuenta gratis'}</p>
+                            </div>
+
+                            <form onsubmit="handleAuthSubmit(event)" class="space-y-5">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">
+                                        <i class="fas fa-envelope text-[#d4af37] mr-2"></i>Correo electrónico
+                                    </label>
+                                    <input type="email" id="email" required placeholder="tu@correo.com" 
+                                        class="w-full px-5 py-4 rounded-xl input-focus outline-none transition-all">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-300 mb-2">
+                                        <i class="fas fa-lock text-[#d4af37] mr-2"></i>Contraseña
+                                    </label>
+                                    <div class="relative">
+                                        <input type="password" id="password" required placeholder="••••••••" 
+                                            class="w-full px-5 py-4 rounded-xl input-focus outline-none transition-all">
+                                        <i class="fas fa-eye password-toggle" id="password-icon" onclick="togglePassword('password')"></i>
+                                    </div>
+                                </div>
+
+                                ${isLogin ? `
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center gap-2 cursor-pointer group">
+                                            <input type="checkbox" id="keepLoggedIn" ${appState.keepLoggedIn ? 'checked' : ''}
+                                                onchange="appState.keepLoggedIn = this.checked"
+                                                class="w-5 h-5 rounded border-gray-600 text-[#d4af37]">
+                                            <span class="text-sm text-gray-400 group-hover:text-[#d4af37] transition-colors">Mantener sesión</span>
+                                        </label>
+                                        <button type="button" onclick="handleForgotPassword()" class="text-sm text-[#d4af37] hover:text-[#f9d67a] font-semibold">
+                                            ¿Olvidaste tu contraseña?
+                                        </button>
+                                    </div>
+                                ` : ''}
+
+                                <button type="submit" class="w-full metallic-btn text-black py-4 rounded-xl font-bold shadow-xl">
+                                    <i class="fas fa-${isLogin ? 'sign-in-alt' : 'user-plus'} mr-2"></i>
+                                    ${isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
+                                </button>
+
+                                <button type="button" onclick="changeViewTo('list')" class="w-full py-4 metallic-outline-btn text-[#d4af37] rounded-xl font-bold transition-all">
+                                    <i class="fas fa-eye mr-2"></i>Ver Directorio de Negocios
+                                </button>
+
+                                <div class="text-center pt-4 border-t border-white/10">
+                                    <button type="button" onclick="changeViewTo('${isLogin ? 'register' : 'login}')" class="text-gray-400 hover:text-[#d4af37] transition-colors">
+                                        ${isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'} 
+                                        <span class="font-bold text-[#d4af37] ml-1">${isLogin ? 'Regístrate aquí' : 'Inicia sesión'}</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="mt-6 text-center text-sm text-gray-500">
+                            <p>Directorio oficial de negocios en León, Guanajuato</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function FormViewComponent() {
+            return `
+                <div class="pb-32 min-h-screen">
+                    ${HeaderComponent()}
+                    
+                    <div class="max-w-5xl mx-auto mt-10 px-6">
+                        <div class="glass-dark p-10 rounded-3xl shadow-2xl fade-in border border-white/10">
+                            <div class="mb-8">
+                                <h2 class="text-3xl font-bold gold-text mb-2">
+                                    <i class="fas fa-${appState.currentBusiness ? 'edit' : 'plus-circle'} mr-3"></i>
+                                    ${appState.currentBusiness ? 'Modificar Negocio' : 'Registrar Nuevo Negocio'}
+                                </h2>
+                                <p class="text-gray-400">Completa la información de tu establecimiento</p>
+                            </div>
+
+                            <form onsubmit="handleBusinessSubmit(event)" class="space-y-8">
+                                <div class="glass p-6 rounded-2xl border-2 border-dashed border-[#d4af37]/30">
+                                    <label class="block text-sm font-bold text-gray-300 mb-3">
+                                        <i class="fas fa-image text-[#d4af37] mr-2"></i>Logotipo del Negocio
+                                    </label>
+                                    <div class="flex items-center gap-6">
+                                        ${appState.formData.logo_url ? `
+                                            <img src="${appState.formData.logo_url}" class="w-32 h-32 object-cover rounded-2xl shadow-lg border-4 border-[#d4af37]">
+                                        ` : `
+                                            <div class="w-32 h-32 bg-black/30 rounded-2xl flex items-center justify-center border-2 border-dashed border-gray-600">
+                                                <i class="fas fa-image text-4xl text-gray-600"></i>
+                                            </div>
+                                        `}
+                                        <div class="flex-1">
+                                            <input type="file" id="logo" accept="image/*" onchange="handleLogoSelection(event)"
+                                                class="w-full p-3 border-2 border-white/10 rounded-xl bg-black/20 text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#d4af37] file:text-black file:font-semibold hover:file:bg-[#f9d67a]">
+                                            <p class="text-xs text-gray-500 mt-2">Formatos: JPG, PNG (Máx. 10MB)</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-300 mb-2">
+                                            <i class="fas fa-store text-[#d4af37] mr-2"></i>Nombre del Negocio *
+                                        </label>
+                                        <input type="text" id="name" required value="${appState.formData.name}" placeholder="Ej: Café La Esquina"
+                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-300 mb-2">
+                                            <i class="fas fa-user-tie text-[#d4af37] mr-2"></i>Representante
+                                        </label>
+                                        <input type="text" id="representative" value="${appState.formData.representative}" placeholder="Nombre del dueño"
+                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-300 mb-2">
+                                            <i class="fas fa-tag text-[#d4af37] mr-2"></i>Giro del Negocio
+                                        </label>
+                                        <input type="text" id="category" value="${appState.formData.category}" placeholder="Ej: Restaurante, Ferretería"
+                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-300 mb-2">
+                                            <i class="fas fa-map-marker-alt text-[#d4af37] mr-2"></i>Dirección *
+                                        </label>
+                                        <input type="text" id="address" required value="${appState.formData.address}" placeholder="Calle, número, colonia"
+                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-300 mb-2">
+                                            <i class="fas fa-phone text-[#d4af37] mr-2"></i>Teléfono *
+                                        </label>
+                                        <input type="text" id="phone" required value="${appState.formData.phone}" placeholder="+52 477 XXX XXXX"
+                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
+                                        <p class="text-xs text-gray-500 mt-1">Debe iniciar con +52 477</p>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-300 mb-2">
+                                            <i class="fas fa-clock text-[#d4af37] mr-2"></i>Horario de Atención
+                                        </label>
+                                        <input type="text" id="hours" value="${appState.formData.hours}" placeholder="Ej: 9:00 AM - 7:00 PM"
+                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-300 mb-2">
+                                            <i class="fas fa-calendar-alt text-[#d4af37] mr-2"></i>Días de Atención
+                                        </label>
+                                        <select id="days" class="w-full px-4 py-3 rounded-xl input-focus outline-none cursor-pointer">
+                                            <option ${appState.formData.days === 'Lunes a Viernes' ? 'selected' : ''}>Lunes a Viernes</option>
+                                            <option ${appState.formData.days === 'Solo fines de semana' ? 'selected' : ''}>Solo fines de semana</option>
+                                            <option ${appState.formData.days === 'Todos los días de la semana' ? 'selected' : ''}>Todos los días de la semana</option>
+                                            <option ${appState.formData.days === 'Otro' ? 'selected' : ''}>Otro</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-sm font-bold text-gray-300 mb-2">
+                                            <i class="fas fa-map-pin text-[#d4af37] mr-2"></i>Ciudad
+                                        </label>
+                                        <input type="text" value="León, Guanajuato" disabled 
+                                            class="w-full px-4 py-3 rounded-xl bg-black/30 text-gray-500 cursor-not-allowed border-2 border-white/5">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-300 mb-2">
+                                        <i class="fas fa-align-left text-[#d4af37] mr-2"></i>Descripción del Negocio
+                                    </label>
+                                    <textarea id="description" rows="4" placeholder="Cuéntanos sobre tu negocio..."
+                                        class="w-full px-4 py-3 rounded-xl input-focus outline-none resize-none">${appState.formData.description}</textarea>
+                                </div>
+
+                                <label class="flex items-start gap-4 p-5 glass rounded-2xl cursor-pointer border-2 border-[#d4af37]/30 hover:border-[#d4af37]/50 transition-all group">
+                                    <input type="checkbox" id="agreed" ${appState.formData.agreed ? 'checked' : ''} 
+                                        class="w-6 h-6 mt-1 rounded-lg border-2 border-[#d4af37]/50 text-[#d4af37]">
+                                    <div class="flex-1">
+                                        <p class="font-semibold text-white group-hover:text-[#d4af37] transition-colors">
+                                            <i class="fas fa-shield-check mr-2"></i>Confirmo que los datos son correctos y reales
+                                        </p>
+                                        <p class="text-sm text-gray-400 mt-1">
+                                            La información será visible para todos los usuarios
+                                        </p>
+                                    </div>
+                                </label>
+
+                                <div class="flex gap-4 pt-4">
+                                    <button type="button" onclick="changeViewTo('list')" 
+                                        class="flex-1 py-4 metallic-outline-btn text-gray-300 rounded-xl font-bold transition-all">
+                                        <i class="fas fa-times mr-2"></i>Cancelar
+                                    </button>
+                                    <button type="submit" class="flex-1 metallic-btn text-black py-4 rounded-xl font-bold shadow-xl">
+                                        <i class="fas fa-save mr-2"></i>Guardar Negocio
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    ${FooterCounterComponent()}
+                </div>
+            `;
+        }
+
+        function ListViewComponent() {
+            const filtered = appState.businesses.filter(b => 
+                b.name.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
+                (b.category && b.category.toLowerCase().includes(appState.searchTerm.toLowerCase()))
+            );
+
+            return `
+                <div class="pb-32 min-h-screen">
+                    ${HeaderComponent()}
+                    
+                    <div class="glass-dark border-b border-white/10 py-8 px-6 mb-10 shadow-lg">
+                        <div class="max-w-7xl mx-auto">
+                            <div class="text-center mb-6">
+                                <h2 class="text-3xl font-bold gold-text mb-2">Descubre Negocios en León</h2>
+                                <p class="text-gray-400">Encuentra los mejores establecimientos cerca de ti</p>
+                            </div>
+                            
+                            <div class="relative max-w-2xl mx-auto fade-in">
+                                <i class="fas fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-[#d4af37] text-xl"></i>
+                                <input type="text" id="search" value="${appState.searchTerm}" onkeyup="handleSearchInput(event)"
+                                    placeholder="Busca por nombre o giro del negocio..." 
+                                    class="w-full pl-16 pr-6 py-5 rounded-2xl input-focus outline-none text-lg shadow-xl">
+                            </div>
+                        </div>
+                    </div>
+
+                    <main class="max-w-7xl mx-auto px-6">
+                        ${filtered.length === 0 ? `
+                            <div class="text-center py-20 fade-in">
+                                <div class="w-32 h-32 glass-dark rounded-full flex items-center justify-center mx-auto mb-6">
+                                    <i class="fas fa-search text-6xl text-gray-600"></i>
+                                </div>
+                                <h3 class="text-2xl font-bold gold-text mb-2">No se encontraron negocios</h3>
+                                <p class="text-gray-400 mb-6">Intenta con otros términos de búsqueda</p>
+                                ${appState.user ? `
+                                    <button onclick="createNewBusiness()" class="metallic-btn text-black px-8 py-4 rounded-xl font-bold shadow-xl">
+                                        <i class="fas fa-plus mr-2"></i>Registra el primer negocio
+                                    </button>
+                                ` : ''}
+                            </div>
+                        ` : `
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                                ${filtered.map((b, i) => `
+                                    <div class="glass-dark rounded-3xl overflow-hidden shadow-2xl card-hover fade-in border border-white/10" style="animation-delay: ${i * 0.1}s">
+                                        <div class="h-64 overflow-hidden relative bg-gradient-to-br from-black/60 to-black/40">
+                                            <img src="${b.logo_url || 'https://via.placeholder.com/400x300/2d2d2d/d4af37?text=Sin+Logo'}" 
+                                                class="w-full h-full object-cover"
+                                                onerror="this.src='https://via.placeholder.com/400x300/2d2d2d/d4af37?text=Negocio'">
+                                            <div class="absolute top-4 right-4">
+                                                <span class="px-4 py-2 glass rounded-full text-xs font-bold text-[#d4af37] shadow-xl backdrop-blur-md border border-[#d4af37]/30">
+                                                    ${b.category || 'Negocio'}
+                                                </span>
+                                            </div>
+                                            ${b.rating > 0 ? `
+                                                <div class="absolute bottom-4 left-4">
+                                                    <div class="px-3 py-2 glass-dark rounded-xl backdrop-blur-md shadow-xl border border-white/10">
+                                                        <div class="flex items-center gap-2">
+                                                            <i class="fas fa-star text-yellow-400"></i>
+                                                            <span class="font-bold text-white">${b.rating}</span>
+                                                            <span class="text-xs text-gray-400">(${b.total_ratings})</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                        
+                                        <div class="p-6">
+                                            <h3 class="text-xl font-bold text-white mb-3 line-clamp-1">${b.name}</h3>
+                                            
+                                            <div class="space-y-2 mb-5">
+                                                <p class="text-sm text-gray-400 flex items-start gap-2">
+                                                    <i class="fas fa-map-marker-alt text-red-400 mt-1 flex-shrink-0"></i>
+                                                    <span class="line-clamp-2">${b.address}</span>
+                                                </p>
+                                                ${b.phone ? `
+                                                    <p class="text-sm text-gray-400 flex items-center gap-2">
+                                                        <i class="fas fa-phone text-[#d4af37]"></i>
+                                                        <span>${b.phone}</span>
+                                                    </p>
+                                                ` : ''}
+                                            </div>
+
+                                            <div class="flex gap-2">
+                                                <button onclick="viewBusinessDetail('${b.id}')" 
+                                                    class="flex-1 metallic-btn text-black py-3 rounded-xl font-semibold shadow-xl text-sm">
+                                                    Detalles
+                                                </button>
+                                                <button onclick="contactBusiness('${b.phone}')" 
+                                                    class="metallic-outline-btn px-4 py-3 rounded-xl transition-all">
+                                                    <i class="fas fa-phone text-[#d4af37]"></i>
+                                                </button>
+                                                ${appState.user && b.user_id === appState.user.id ? `
+                                                    <button onclick="editBusinessData('${b.id}')" 
+                                                        class="glass px-4 py-3 rounded-xl hover:bg-white/10 transition-all border border-blue-400/30">
+                                                        <i class="fas fa-edit text-blue-400"></i>
+                                                    </button>
+                                                ` : ''}
+                                            </div>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `}
+                    </main>
+                    
+                    ${FooterCounterComponent()}
+                </div>
+            `;
+        }
+
+        function ProfileViewComponent() {
+            const b = appState.currentBusiness;
+            if (!b) return '';
+
+            return `
+                <div class="pb-32 min-h-screen">
+                    ${HeaderComponent()}
+                    
+                    <div class="max-w-6xl mx-auto mt-10 px-6">
+                        <div class="glass-dark rounded-3xl overflow-hidden shadow-2xl fade-in border border-white/10">
+                            <div class="h-80 bg-gradient-to-br from-[#d4af37] via-[#f9d67a] to-[#d4af37] relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/30"></div>
+                                <button onclick="changeViewTo('list')" 
+                                    class="absolute top-6 left-6 w-14 h-14 glass-dark rounded-xl flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-xl backdrop-blur-md z-10 border border-white/20">
+                                    <i class="fas fa-arrow-left text-xl"></i>
+                                </button>
+                                
+                                <div class="absolute -bottom-24 left-10">
+                                    <div class="p-2 glass-dark rounded-3xl shadow-2xl backdrop-blur-md border border-white/20">
+                                        <img src="${b.logo_url || 'https://via.placeholder.com/200/2d2d2d/d4af37?text=Logo'}" 
+                                            class="w-48 h-48 rounded-2xl object-cover"
+                                            onerror="this.src='https://via.placeholder.com/200/2d2d2d/d4af37?text=Logo'">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="pt-32 px-10 pb-10">
+                                <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-10">
+                                    <div class="flex-1">
+                                        <h2 class="text-5xl font-bold gold-text mb-3">${b.name}</h2>
+                                        <p class="text-[#d4af37] font-semibold text-xl flex items-center gap-2">
+                                            <i class="fas fa-tag"></i>${b.category || 'Negocio'}
+                                        </p>
+                                    </div>
+                                    
+                                    <div class="glass px-8 py-6 rounded-2xl text-center shadow-xl border border-white/10">
+                                        <div class="flex items-center gap-3 text-4xl font-bold text-white mb-2">
+                                            <i class="fas fa-star text-yellow-400"></i>
+                                            <span>${b.rating || '0.0'}</span>
+                                        </div>
+                                        <p class="text-sm text-gray-400">${b.total_ratings || 0} reseñas</p>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
+                                    <div class="space-y-6">
+                                        <section>
+                                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                                <i class="fas fa-info-circle text-[#d4af37]"></i>Información de Contacto
+                                            </h4>
+                                            <div class="space-y-4">
+                                                <div class="flex items-center gap-5 p-5 glass rounded-2xl hover:shadow-xl transition-all border border-white/10">
+                                                    <div class="w-14 h-14 gold-gradient rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                                                        <i class="fas fa-phone text-black text-xl"></i>
+                                                    </div>
+                                                    <div class="flex-1">
+                                                        <p class="text-xs text-gray-500 mb-1 uppercase tracking-wide">Teléfono</p>
+                                                        <p class="font-semibold text-white text-lg">${b.phone}</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="flex items-start gap-5 p-5 glass rounded-2xl hover:shadow-xl transition-all border border-white/10">
+                                                    <div class="w-14 h-14 bg-red-500/20 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg border border-red-500/30">
+                                                        <i class="fas fa-map-marked-alt text-red-400 text-xl"></i>
+                                                    </div>
+                                                    <div class="flex-1">
+                                                        <p class="text-xs text-gray-500 mb-1 uppercase tracking-wide">Dirección</p>
+                                                        <p class="font-semibold text-white leading-relaxed">${b.address}, León, Gto.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+
+                                        <section>
+                                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                                <i class="fas fa-clock text-[#d4af37]"></i>Horario de Atención
+                                            </h4>
+                                            <div class="glass p-6 rounded-2xl space-y-4 border border-white/10">
+                                                <div class="flex items-center justify-between py-3 border-b border-white/10">
+                                                    <span class="text-gray-400 font-medium flex items-center gap-2">
+                                                        <i class="fas fa-calendar-alt text-[#d4af37]"></i>Días
+                                                    </span>
+                                                    <span class="font-bold text-white">${b.days}</span>
+                                                </div>
+                                                <div class="flex items-center justify-between py-3">
+                                                    <span class="text-gray-400 font-medium flex items-center gap-2">
+                                                        <i class="fas fa-clock text-[#d4af37]"></i>Horario
+                                                    </span>
+                                                    <span class="font-bold text-white">${b.hours || 'No especificado'}</span>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+
+                                    <div class="space-y-6">
+                                        <section>
+                                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                                <i class="fas fa-file-alt text-[#d4af37]"></i>Descripción
+                                            </h4>
+                                            <div class="glass p-6 rounded-2xl border-l-4 border-[#d4af37]">
+                                                <p class="text-gray-300 leading-relaxed">
+                                                    ${b.description || 'Sin descripción disponible.'}
+                                                </p>
+                                            </div>
+                                        </section>
+
+                                        ${b.representative ? `
+                                            <section>
+                                                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                                                    <i class="fas fa-user-tie text-[#d4af37]"></i>Representante
+                                                </h4>
+                                                <div class="glass p-6 rounded-2xl border border-white/10">
+                                                    <p class="font-semibold text-white text-lg">${b.representative}</p>
+                                                </div>
+                                            </section>
+                                        ` : ''}
+
+                                        <div class="flex gap-3">
+                                            <button onclick="contactBusiness('${b.phone}')" class="flex-1 metallic-btn text-black py-4 rounded-xl font-bold shadow-xl">
+                                                <i class="fas fa-phone mr-2"></i>Contactar
+                                            </button>
+                                            ${appState.user && b.user_id === appState.user.id ? `
+                                                <button onclick="deleteBusinessData('${b.id}')" 
+                                                    class="px-6 py-4 bg-red-500/20 text-red-400 rounded-xl font-bold hover:bg-red-500/30 transition-all border border-red-500/30">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                ${appState.user ? `
+                                    <div class="glass p-8 rounded-3xl border-2 border-[#d4af37]/30 mb-10">
+                                        <h4 class="text-2xl font-bold gold-text mb-6 flex items-center gap-2">
+                                            <i class="fas fa-star"></i>Deja tu opinión
+                                        </h4>
+                                        
+                                        <form onsubmit="handleReviewSubmit(event, '${b.id}')" class="space-y-6">
+                                            <div>
+                                                <label class="block text-sm font-bold text-gray-300 mb-3">Calificación</label>
+                                                <div class="flex gap-3">
+                                                    ${[1,2,3,4,5].map(i => `
+                                                        <button type="button" onclick="selectRatingStars(${i})" 
+                                                            class="star-btn text-5xl transition-all star-rating hover:scale-110" data-rating="${i}">
+                                                            <span class="text-gray-600">★</span>
+                                                        </button>
+                                                    `).join('')}
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                <label class="block text-sm font-bold text-gray-300 mb-3">Comentario (opcional)</label>
+                                                <textarea id="review-comment" rows="4" placeholder="Comparte tu experiencia..."
+                                                    class="w-full px-4 py-3 rounded-xl input-focus outline-none resize-none"></textarea>
+                                            </div>
+                                            
+                                            <button type="submit" class="metallic-btn text-black px-8 py-4 rounded-xl font-bold shadow-xl">
+                                                <i class="fas fa-paper-plane mr-2"></i>Publicar Reseña
+                                            </button>
+                                        </form>
+                                    </div>
+                                ` : `
+                                    <div class="glass p-8 rounded-3xl text-center mb-10 border-2 border-white/10">
+                                        <i class="fas fa-lock text-4xl text-gray-600 mb-4"></i>
+                                        <p class="text-gray-400 mb-4">Inicia sesión para dejar tu reseña</p>
+                                        <button onclick="changeViewTo('login')" class="metallic-btn text-black px-8 py-3 rounded-xl font-bold shadow-xl">
+                                            Iniciar Sesión
+                                        </button>
+                                    </div>
+                                `}
+
+                                <div class="border-t-2 border-white/10 pt-10">
+                                    <h4 class="text-2xl font-bold gold-text mb-6 flex items-center gap-2">
+                                        <i class="fas fa-comments"></i>Reseñas (${b.reviews?.length || 0})
+                                    </h4>
+                                    
+                                    ${(b.reviews && b.reviews.length > 0) ? `
+                                        <div class="space-y-4">
+                                            ${b.reviews.map(r => `
+                                                <div class="glass p-6 rounded-2xl hover:shadow-xl transition-all border border-white/10">
+                                                    <div class="flex items-start justify-between mb-3">
+                                                        <div class="flex items-center gap-3">
+                                                            <div class="w-14 h-14 gold-gradient rounded-full flex items-center justify-center text-black font-bold text-xl shadow-lg">
+                                                                ${r.user_name.charAt(0).toUpperCase()}
+                                                            </div>
+                                                            <div>
+                                                                <p class="font-bold text-white">${r.user_name}</p>
+                                                                <p class="text-xs text-gray-500">${new Date(r.created_at).toLocaleDateString('es-MX')}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex gap-1 text-yellow-400 text-xl">
+                                                            ${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}
+                                                        </div>
+                                                    </div>
+                                                    ${r.comment ? `<p class="text-gray-300 leading-relaxed pl-17">${r.comment}</p>` : ''}
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    ` : `
+                                        <div class="text-center py-12 glass rounded-2xl border border-white/10">
+                                            <i class="fas fa-inbox text-6xl text-gray-700 mb-4"></i>
+                                            <p class="text-gray-400">Aún no hay reseñas</p>
+                                            <p class="text-gray-500 text-sm mt-2">Sé el primero en compartir tu experiencia</p>
+                                        </div>
+                                    `}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    ${FooterCounterComponent()}
+                </div>
+            `;
+        }
+
+        function contactBusiness(phone) {
+            if (phone) {
+                const cleanPhone = phone.replace(/\s/g, '');
+                window.open(`https://wa.me/${cleanPhone}`, '_blank');
+            } else {
+                showNotification('No hay teléfono disponible', 'error');
+            }
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (appState.view === 'login') {
+                const result = await loginUser(email, password);
+                if (result.success) {
+                    if (appState.keepLoggedIn) localStorage.setItem('keepLoggedIn', 'true');
+                    await loadAllBusinesses();
+                    appState.view = 'list';
+                    showNotification('¡Bienvenido!', 'success');
+                    renderApp();
+                } else {
+                    showNotification(result.message, 'error');
+                }
+            } else {
+                const result = await registerUser(email, password);
+                showNotification(result.message, result.success ? 'success' : 'error');
+                if (result.success) {
+                    setTimeout(() => { appState.view = 'login'; renderApp(); }, 2000);
+                }
+            }
+        }
+
+        async function handleForgotPassword() {
+            const email = prompt('Ingresa tu correo:');
+            if (!email) return;
+            const result = await resetPassword(email);
+            showNotification(result.message, result.success ? 'success' : 'error');
+        }
+
+        function handleLogoSelection(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (file.size > 10 * 1024 * 1024) {
+                showNotification('El archivo no debe superar 10MB', 'error');
+                e.target.value = '';
+                return;
+            }
+            appState.formData.logo = file;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                appState.formData.logo_url = event.target.result;
+                renderApp();
+            };
+            reader.readAsDataURL(file);
+        }
+
+        async function handleBusinessSubmit(e) {
+            e.preventDefault();
+            appState.formData = {
+                ...appState.formData,
+                name: document.getElementById('name').value.trim(),
+                representative: document.getElementById('representative').value.trim(),
+                category: document.getElementById('category').value.trim(),
+                address: document.getElementById('address').value.trim(),
+                phone: document.getElementById('phone').value.trim(),
+                hours: document.getElementById('hours').value.trim(),
+                days: document.getElementById('days').value,
+                description: document.getElementById('description').value.trim(),
+                agreed: document.getElementById('agreed').checked
+            };
+            await saveBusinessData(appState.formData);
+        }
+
+        async function handleReviewSubmit(e, businessId) {
+            e.preventDefault();
+            if (appState.selectedRating === 0) {
+                showNotification('Selecciona una calificación', 'error');
+                return;
+            }
+            const comment = document.getElementById('review-comment').value.trim();
+            await saveReviewData(businessId, appState.selectedRating, comment);
+        }
+
+        function handleSearchInput(e) {
+            appState.searchTerm = e.target.value;
+            renderApp();
+        }
+
+        function selectRatingStars(rating) {
+            appState.selectedRating = rating;
+            document.querySelectorAll('.star-btn').forEach((btn, i) => {
+                const star = btn.querySelector('span');
+                star.className = i < rating ? 'text-yellow-400' : 'text-gray-600';
+            });
+        }
+
+        function changeViewTo(view) {
+            appState.view = view;
+            if (view === 'list') appState.searchTerm = '';
+            renderApp();
+        }
+
+        function createNewBusiness() {
+            if (!appState.user) {
+                showNotification('Debes iniciar sesión', 'error');
+                changeViewTo('login');
+                return;
+            }
+            resetFormData();
+            appState.currentBusiness = null;
+            appState.view = 'form';
+            renderApp();
+        }
+
+        function editBusinessData(id) {
+            const business = appState.businesses.find(b => b.id === id);
+            if (!business) return;
+            appState.currentBusiness = business;
+            appState.formData = {
+                name: business.name || '',
+                representative: business.representative || '',
+                category: business.category || '',
+                address: business.address || '',
+                phone: business.phone || '+52 477 ',
+                hours: business.hours || '',
+                days: business.days || 'Lunes a Viernes',
+                description: business.description || '',
+                logo: null,
+                logo_url: business.logo_url || '',
+                agreed: false
+            };
+            appState.view = 'form';
+            renderApp();
+        }
+
+        function viewBusinessDetail(id) {
+            const business = appState.businesses.find(b => b.id === id);
+            if (!business) return;
+            appState.currentBusiness = business;
+            appState.view = 'profile';
+            appState.selectedRating = 0;
+            renderApp();
+        }
+
+        function renderApp() {
+            const app = document.getElementById('app');
+            let content = '';
+
+            switch(appState.view) {
+                case 'login':
+                case 'register':
+                    content = LoginViewComponent();
+                    break;
+                case 'form':
+                    content = FormViewComponent();
+                    break;
+                case 'list':
+                    content = ListViewComponent();
+                    break;
+                case 'profile':
+                    content = ProfileViewComponent();
+                    break;
+                default:
+                    content = LoginViewComponent();
+            }
+
+            app.innerHTML = content;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        async function initializeApp() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                
+                if (session) {
+                    appState.user = session.user;
+                    appState.view = 'list';
+                    const keepLoggedIn = localStorage.getItem('keepLoggedIn');
+                    if (keepLoggedIn) appState.keepLoggedIn = true;
+                }
+
+                await loadAllBusinesses();
+                await updateViewCounterData();
+                renderApp();
+
+                supabaseClient.auth.onAuthStateChange((event, session) => {
+                    if (event === 'SIGNED_IN') {
+                        appState.user = session?.user || null;
+                        appState.view = 'list';
+                        renderApp();
+                    } else if (event === 'SIGNED_OUT') {
+                        appState.user = null;
+                        appState.view = 'login';
+                        renderApp();
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error inicializando:', error);
+                showNotification('Error al iniciar', 'error');
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+
+    </script>
+</body>
+</html>
