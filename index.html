@@ -4,352 +4,319 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ubicanegoleon - Directorio de Negocios en León, Gto.</title>
-    
-    <!-- Supabase JS Client -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
-    <!-- Google Fonts - Poppins -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
     <style>
-        /* Fuente principal */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
             min-height: 100vh;
             color: #ffffff;
         }
-
-        /* Efecto glass claro */
+        
         .glass {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            background: rgba(26, 26, 26, 0.85);
             backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(212, 175, 55, 0.2);
         }
-
-        /* Efecto glass oscuro */
-        .glass-dark {
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.4) 100%);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        
+        .glass-light {
+            background: rgba(40, 40, 40, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
         }
-
-        /* Gradiente dorado */
-        .gold-gradient {
-            background: linear-gradient(135deg, #d4af37 0%, #f9d67a 50%, #d4af37 100%);
-        }
-
-        /* Texto dorado */
-        .gold-text {
-            background: linear-gradient(135deg, #d4af37 0%, #f9d67a 50%, #d4af37 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Botón metálico dorado */
-        .metallic-btn {
-            background: linear-gradient(135deg, #d4af37 0%, #f9d67a 50%, #d4af37 100%);
-            box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4), inset 0 1px 0 rgba(255,255,255,0.3);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* Efecto brillo en botón */
-        .metallic-btn::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: rotate(45deg);
-            animation: shine 3s infinite;
-        }
-
-        @keyframes shine {
-            0%, 100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-            50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-        }
-
-        .metallic-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 30px rgba(212, 175, 55, 0.6), inset 0 1px 0 rgba(255,255,255,0.4);
-        }
-
-        /* Botón metálico outline */
-        .metallic-outline-btn {
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid #d4af37;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .metallic-outline-btn:hover {
-            background: rgba(212, 175, 55, 0.1);
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
-            transform: translateY(-2px);
-        }
-
-        /* Animación fade-in */
+        
         .fade-in {
             animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* Efecto hover en cards */
+        
+        .slide-in {
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
         .card-hover {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
+        
         .card-hover:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(212, 175, 55, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
         }
-
-        /* Estilo inputs */
+        
+        .gradient-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #aa8a2e 100%);
+        }
+        
         .input-focus {
             transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            color: #ffffff;
         }
-
+        
         .input-focus:focus {
-            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(212, 175, 55, 0.2);
             border-color: #d4af37;
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
         }
-
-        .input-focus::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
-
-        /* Toggle contraseña */
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #d4af37;
+        
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #aa8a2e 100%);
             transition: all 0.3s ease;
         }
 
-        .password-toggle:hover {
-            color: #f9d67a;
-            transform: translateY(-50%) scale(1.1);
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
         }
 
-        /* Efecto pulso dorado */
-        .pulse-gold {
-            animation: pulseGold 2s infinite;
+        .pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
-        @keyframes pulseGold {
-            0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); }
-            50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.8); }
+        /* Modal moderno estilo Windows */
+        .modal-overlay {
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
         }
 
-        /* Limitar texto en una línea */
-        .line-clamp-1 {
-            display: -webkit-box;
-            -webkit-line-clamp: 1;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        .modal-content {
+            animation: modalSlide 0.3s ease-out;
         }
 
-        /* Limitar texto en dos líneas */
-        .line-clamp-2 {
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        @keyframes modalSlide {
+            from { 
+                opacity: 0; 
+                transform: scale(0.9) translateY(-20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: scale(1) translateY(0); 
+            }
         }
     </style>
 </head>
 <body>
     <div id="app"></div>
-    
+    <div id="modal-root"></div>
+
     <script>
-        // ============================================
-        // CONFIGURACIÓN SUPABASE
-        // ============================================
+        const SUPABASE_URL = 'https://igastcafgjwijvgvcclr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlnYXN0Y2FmZ2p3aWp2Z3ZjY2xyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODkzMjMsImV4cCI6MjA4NDE2NTMyM30.GQxFvm76xHzKj3px7HBtehi5EOOpSQvqk26DAkt2Tz4';
         
-        const SUPABASE_URL = 'https://igastcafgjwijvgvcclr.supabase.co'; // URL del proyecto
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlnYXN0Y2FmZ2p3aWp2Z3ZjY2xyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODkzMjMsImV4cCI6MjA4NDE2NTMyM30.GQxFvm76xHzKj3px7HBtehi5EOOpSQvqk26DAkt2Tz4'; // Clave pública
-        
-        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-            auth: {
-                redirectTo: window.location.href,
-                autoRefreshToken: true,
-                persistSession: true
-            }
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+            auth: { autoRefreshToken: true, persistSession: true, detectSessionInUrl: true }
         });
 
-        // ============================================
-        // ESTADO DE LA APLICACIÓN
-        // ============================================
-        
-        let appState = {
-            view: 'login',                    // login | register | list | form | profile
-            user: null,                       // Usuario autenticado
-            businesses: [],                   // Lista de negocios
-            currentBusiness: null,            // Negocio actual (para editar/ver)
-            searchTerm: '',                   // Término de búsqueda
-            viewCount: 2149,                  // Contador de visitas
-            keepLoggedIn: false,              // Mantener sesión activa
-            selectedRating: 0,                // Calificación seleccionada para reseña
-            
-            formData: {                       // Datos del formulario de negocio
-                name: '',
-                representative: '',
-                category: '',
-                address: '',
-                phone: '+52 477 ',
-                hours: '',
-                days: 'Lunes a Viernes',
-                description: '',
-                logo: null,
-                logo_url: '',
-                agreed: false
+        let state = {
+            view: 'login',
+            user: null,
+            businesses: [],
+            currentBusiness: null,
+            searchTerm: '',
+            viewCount: 1800,
+            keepLoggedIn: false,
+            selectedRating: 0,
+            showPassword: {},
+            formData: {
+                name: '', representative: '', category: '', address: '', phone: '+52 477 ', 
+                hours: '', days: 'Lunes a Viernes', description: '', logo: null, logo_url: '', agreed: false
             }
         };
 
-        // ============================================
-        // AUTENTICACIÓN DE USUARIOS
-        // ============================================
-        
-        // Iniciar sesión con email y contraseña
+        // ========== MODAL MODERNO ==========
+        function showModal(title, message, type = 'error') {
+            const icons = {
+                error: { icon: 'fa-exclamation-circle', color: 'text-red-400', bg: 'bg-red-500/10' },
+                success: { icon: 'fa-check-circle', color: 'text-green-400', bg: 'bg-green-500/10' },
+                info: { icon: 'fa-info-circle', color: 'text-blue-400', bg: 'bg-blue-500/10' },
+                warning: { icon: 'fa-exclamation-triangle', color: 'text-yellow-400', bg: 'bg-yellow-500/10' }
+            };
+            const style = icons[type] || icons.info;
+
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay fixed inset-0 z-50 flex items-center justify-center p-6';
+            modal.innerHTML = `
+                <div class="modal-content glass max-w-md w-full rounded-3xl overflow-hidden shadow-2xl border-2 border-${type === 'error' ? 'red' : type === 'success' ? 'green' : 'blue'}-500/30">
+                    <div class="${style.bg} p-6 border-b border-gray-700/50">
+                        <div class="flex items-center gap-4">
+                            <div class="w-14 h-14 rounded-full bg-gray-800/50 flex items-center justify-center">
+                                <i class="fas ${style.icon} text-3xl ${style.color}"></i>
+                            </div>
+                            <h3 class="text-2xl font-bold text-white">${title}</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-300 leading-relaxed text-lg">${message}</p>
+                    </div>
+                    <div class="p-6 pt-0 flex gap-3">
+                        <button onclick="this.closest('.modal-overlay').remove()" 
+                            class="flex-1 px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white rounded-xl font-semibold transition-all">
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modal-root').appendChild(modal);
+            setTimeout(() => modal.remove(), 5000);
+        }
+
+        // ========== VALIDACIÓN Y MENSAJES DE ERROR MEJORADOS ==========
+        function getAuthErrorMessage(error) {
+            const msg = error.message || '';
+            
+            if (msg.includes('User already registered') || msg.includes('already been registered')) {
+                return { title: 'Usuario Existente', message: 'Este correo ya está registrado. Intenta iniciar sesión o usa otro correo.', type: 'warning' };
+            }
+            if (msg.includes('Invalid login credentials')) {
+                return { title: 'Credenciales Incorrectas', message: 'El correo o la contraseña son incorrectos. Verifica tus datos.', type: 'error' };
+            }
+            if (msg.includes('Email not confirmed')) {
+                return { title: 'Correo No Confirmado', message: 'Por favor confirma tu correo electrónico antes de iniciar sesión.', type: 'info' };
+            }
+            if (msg.includes('invalid format')) {
+                return { title: 'Formato Inválido', message: 'El formato del correo electrónico no es válido.', type: 'error' };
+            }
+            if (msg.includes('Password should be at least 6')) {
+                return { title: 'Contraseña Débil', message: 'La contraseña debe tener al menos 6 caracteres.', type: 'error' };
+            }
+            if (msg.includes('rate limit')) {
+                return { title: 'Demasiados Intentos', message: 'Espera unos minutos antes de intentar nuevamente.', type: 'warning' };
+            }
+            
+            return { title: 'Error', message: msg || 'Ocurrió un error inesperado.', type: 'error' };
+        }
+
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // ========== AUTENTICACIÓN ==========
         async function loginUser(email, password) {
             try {
-                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                const { data, error } = await supabase.auth.signInWithPassword({ 
+                    email: email.toLowerCase().trim(), 
+                    password 
+                });
                 if (error) throw error;
-                appState.user = data.user;
+                state.user = data.user;
                 return { success: true };
             } catch (error) {
-                return { success: false, message: error.message };
+                return { success: false, error };
             }
         }
 
-        // Registrar nuevo usuario
-        async function registerUser(email, password) {
+        async function registerUser(email, password, confirmPassword) {
             try {
-                const { data, error } = await supabaseClient.auth.signUp({
-                    email,
+                if (!isValidEmail(email)) {
+                    throw new Error('invalid format');
+                }
+                if (password.length < 6) {
+                    throw new Error('Password should be at least 6 characters');
+                }
+                if (password !== confirmPassword) {
+                    throw new Error('Las contraseñas no coinciden');
+                }
+                
+                const { data, error } = await supabase.auth.signUp({ 
+                    email: email.toLowerCase().trim(), 
                     password,
-                    options: { emailRedirectTo: window.location.href }
+                    options: {
+                        emailRedirectTo: `${window.location.origin}${window.location.pathname}`
+                    }
                 });
+                
                 if (error) throw error;
-                return { success: true, message: 'Cuenta creada. Revisa tu correo para confirmar.' };
+                return { success: true, requiresConfirmation: !data.session };
             } catch (error) {
-                return { success: false, message: error.message };
+                return { success: false, error };
             }
         }
 
-        // Cerrar sesión
         async function logoutUser() {
-            await supabaseClient.auth.signOut();
-            appState.user = null;
-            appState.view = 'login';
+            await supabase.auth.signOut();
+            state.user = null;
+            state.view = 'login';
             localStorage.removeItem('keepLoggedIn');
-            renderApp();
+            render();
         }
 
-        // Restablecer contraseña
         async function resetPassword(email) {
             try {
-                const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                    redirectTo: window.location.href
+                if (!isValidEmail(email)) throw new Error('invalid format');
+                const { error } = await supabase.auth.resetPasswordForEmail(email.toLowerCase().trim(), {
+                    redirectTo: `${window.location.origin}${window.location.pathname}`
                 });
                 if (error) throw error;
-                return { success: true, message: 'Revisa tu correo para restablecer contraseña.' };
+                return { success: true };
             } catch (error) {
-                return { success: false, message: error.message };
+                return { success: false, error };
             }
         }
 
-        // ============================================
-        // GESTIÓN DE NEGOCIOS
-        // ============================================
-        
-        // Cargar todos los negocios desde Supabase
-        async function loadAllBusinesses() {
+        // ========== NEGOCIOS ==========
+        async function loadBusinesses() {
             try {
-                const { data, error } = await supabaseClient
+                const { data, error } = await supabase
                     .from('businesses')
                     .select(`*, reviews(id, rating, comment, user_name, created_at)`)
                     .order('created_at', { ascending: false });
                 
                 if (error) throw error;
                 
-                appState.businesses = (data || []).map(business => {
-                    const reviews = business.reviews || [];
-                    const avgRating = reviews.length > 0
+                state.businesses = (data || []).map(b => {
+                    const reviews = b.reviews || [];
+                    const avgRating = reviews.length > 0 
                         ? (reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)
                         : 0;
-                    return { ...business, rating: avgRating, total_ratings: reviews.length };
+                    return { ...b, rating: avgRating, total_ratings: reviews.length };
                 });
             } catch (error) {
-                console.error('Error cargando negocios:', error);
-                showNotification('Error al cargar negocios', 'error');
+                showModal('Error', 'No se pudieron cargar los negocios', 'error');
             }
         }
 
-        // Guardar o actualizar negocio
-        async function saveBusinessData(formData) {
+        async function saveBusiness(formData) {
             if (!formData.agreed) {
-                showNotification('Debes confirmar que los datos son reales', 'error');
+                showModal('Confirmación Requerida', 'Debes confirmar que los datos son reales', 'warning');
                 return;
             }
-
-            const phoneRegex = /^\+52\s?477\s?\d{3}\s?\d{4}$/;
-            if (!phoneRegex.test(formData.phone)) {
-                showNotification('El teléfono debe tener formato: +52 477 XXX XXXX', 'error');
+            
+            if (!/^\+52\s?477\s?\d{3}\s?\d{4}$/.test(formData.phone)) {
+                showModal('Teléfono Inválido', 'El teléfono debe tener formato: +52 477 XXX XXXX', 'error');
                 return;
             }
 
             try {
                 let logoUrl = formData.logo_url;
-                
-                // Subir logo si existe
-                if (formData.logo && formData.logo instanceof File) {
+
+                if (formData.logo instanceof File) {
                     const fileExt = formData.logo.name.split('.').pop();
-                    const fileName = `${appState.user.id}/${Date.now()}.${fileExt}`;
-                    
-                    const { error: uploadError } = await supabaseClient.storage
+                    const fileName = `${state.user.id}/${Date.now()}.${fileExt}`;
+                    const { error: uploadError } = await supabase.storage
                         .from('business-logos')
                         .upload(fileName, formData.logo, { cacheControl: '3600', upsert: false });
-                    
                     if (uploadError) throw uploadError;
-                    
-                    const { data: urlData } = supabaseClient.storage
-                        .from('business-logos')
-                        .getPublicUrl(fileName);
-                    
-                    logoUrl = urlData.publicUrl;
+                    logoUrl = supabase.storage.from('business-logos').getPublicUrl(fileName).data.publicUrl;
                 }
 
-                // Datos del negocio
                 const businessData = {
                     name: formData.name.trim(),
                     representative: formData.representative.trim() || null,
@@ -361,297 +328,228 @@
                     description: formData.description.trim() || null,
                     logo_url: logoUrl,
                     city: 'León, Guanajuato',
-                    user_id: appState.user.id
+                    user_id: state.user.id
                 };
 
-                // Actualizar o insertar
-                if (appState.currentBusiness) {
-                    const { error } = await supabaseClient
-                        .from('businesses')
-                        .update(businessData)
-                        .eq('id', appState.currentBusiness.id);
-                    
-                    if (error) throw error;
-                    showNotification('Negocio actualizado exitosamente', 'success');
-                } else {
-                    const { error } = await supabaseClient
-                        .from('businesses')
-                        .insert([businessData]);
-                    
-                    if (error) throw error;
-                    showNotification('Negocio registrado exitosamente', 'success');
-                }
-
-                await loadAllBusinesses();
-                appState.view = 'list';
-                appState.currentBusiness = null;
-                resetFormData();
-                renderApp();
+                const { error } = state.currentBusiness
+                    ? await supabase.from('businesses').update(businessData).eq('id', state.currentBusiness.id)
+                    : await supabase.from('businesses').insert([businessData]);
+                
+                if (error) throw error;
+                
+                showModal('¡Éxito!', state.currentBusiness ? 'Negocio actualizado correctamente' : 'Negocio registrado exitosamente', 'success');
+                await loadBusinesses();
+                state.view = 'list';
+                state.currentBusiness = null;
+                resetForm();
+                render();
             } catch (error) {
-                showNotification('Error al guardar: ' + error.message, 'error');
+                showModal('Error al Guardar', error.message, 'error');
             }
         }
 
-        // Eliminar negocio
-        async function deleteBusinessData(id) {
+        async function deleteBusiness(id) {
             if (!confirm('¿Eliminar este negocio? Esta acción no se puede deshacer.')) return;
             try {
-                const { error } = await supabaseClient.from('businesses').delete().eq('id', id);
+                const { error } = await supabase.from('businesses').delete().eq('id', id);
                 if (error) throw error;
-                await loadAllBusinesses();
-                appState.view = 'list';
-                showNotification('Negocio eliminado', 'success');
-                renderApp();
+                await loadBusinesses();
+                state.view = 'list';
+                showModal('Eliminado', 'Negocio eliminado correctamente', 'success');
+                render();
             } catch (error) {
-                showNotification('Error al eliminar: ' + error.message, 'error');
+                showModal('Error', error.message, 'error');
             }
         }
 
-        // ============================================
-        // GESTIÓN DE RESEÑAS
-        // ============================================
-        
-        // Guardar reseña
-        async function saveReviewData(businessId, rating, comment) {
-            if (!appState.user) {
-                showNotification('Debes iniciar sesión para dejar una reseña', 'error');
+        async function saveReview(businessId, rating, comment) {
+            if (!state.user) {
+                showModal('Sesión Requerida', 'Debes iniciar sesión para dejar una reseña', 'warning');
                 return;
             }
             if (rating === 0) {
-                showNotification('Selecciona una calificación', 'error');
+                showModal('Calificación Requerida', 'Selecciona una calificación', 'warning');
                 return;
             }
+
             try {
-                const { error } = await supabaseClient.from('reviews').insert([{
+                const { error } = await supabase.from('reviews').insert([{
                     business_id: businessId,
-                    user_id: appState.user.id,
-                    user_name: appState.user.email.split('@')[0],
-                    rating: rating,
+                    user_id: state.user.id,
+                    user_name: state.user.email.split('@')[0],
+                    rating,
                     comment: comment.trim()
                 }]);
                 if (error) throw error;
-                await loadAllBusinesses();
-                appState.selectedRating = 0;
-                showNotification('Reseña publicada', 'success');
-                renderApp();
+                await loadBusinesses();
+                state.selectedRating = 0;
+                showModal('¡Gracias!', 'Tu reseña ha sido publicada', 'success');
+                render();
             } catch (error) {
-                showNotification('Error al guardar reseña: ' + error.message, 'error');
+                showModal('Error', error.message, 'error');
             }
         }
 
-        // ============================================
-        // UTILIDADES Y FUNCIONES AUXILIARES
-        // ============================================
-        
-        // Actualizar contador de visitas
-        async function updateViewCounterData() {
-            setInterval(() => {
-                const increment = Math.floor(Math.random() * 3) + 1;
-                appState.viewCount += increment;
-                updateCounterDisplay();
-            }, 12000);
+        // ========== HELPERS ==========
+        function resetForm() {
+            state.formData = {
+                name: '', representative: '', category: '', address: '', phone: '+52 477 ', 
+                hours: '', days: 'Lunes a Viernes', description: '', logo: null, logo_url: '', agreed: false
+            };
         }
 
-        // Actualizar visualización del contador
-        function updateCounterDisplay() {
+        function togglePassword(id) {
+            state.showPassword[id] = !state.showPassword[id];
+            render();
+        }
+
+        setInterval(() => {
+            state.viewCount += Math.floor(Math.random() * 5) + 1;
             const el = document.getElementById('view-counter');
-            if (el) el.textContent = appState.viewCount.toLocaleString();
-        }
+            if (el) el.textContent = state.viewCount.toLocaleString();
+        }, 8000);
 
-        // Mostrar notificación
-        function showNotification(message, type = 'info') {
-            const colors = {
-                success: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                error: 'linear-gradient(135deg, #ef4444 0%, #dc2626 100%)',
-                info: 'linear-gradient(135deg, #d4af37 0%, #f9d67a 100%)'
-            };
-            
-            const n = document.createElement('div');
-            n.style.background = colors[type];
-            n.className = 'fixed top-6 right-6 text-white px-6 py-4 rounded-2xl shadow-2xl z-50 fade-in';
-            n.style.border = '1px solid rgba(255, 255, 255, 0.3)';
-            n.innerHTML = `<div class="flex items-center gap-3"><i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle'}"></i><span class="font-medium">${message}</span></div>`;
-            document.body.appendChild(n);
-            setTimeout(() => { n.style.opacity = '0'; setTimeout(() => n.remove(), 300); }, 4000);
-        }
-
-        // Resetear formulario
-        function resetFormData() {
-            appState.formData = {
-                name: '', 
-                representative: '', 
-                category: '', 
-                address: '', 
-                phone: '+52 477 ',
-                hours: '', 
-                days: 'Lunes a Viernes', 
-                description: '', 
-                logo: null, 
-                logo_url: '', 
-                agreed: false
-            };
-        }
-
-        // Alternar visibilidad de contraseña
-        function togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(inputId + '-icon');
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                input.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        }
-
-        // Contactar negocio por WhatsApp
-        function contactBusiness(phone) {
-            if (phone) {
-                const cleanPhone = phone.replace(/\s/g, '');
-                window.open(`https://wa.me/${cleanPhone}`, '_blank');
-            } else {
-                showNotification('No hay teléfono disponible', 'error');
-            }
-        }
-
-        // ============================================
-        // COMPONENTES DE LA INTERFAZ
-        // ============================================
-        
-        // Header - Barra de navegación
-        function HeaderComponent() {
-            return `
-                <header class="glass-dark sticky top-0 z-40 shadow-2xl border-b border-white/10">
-                    <div class="max-w-7xl mx-auto px-6 py-5">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center gap-4">
-                                <div class="w-14 h-14 gold-gradient rounded-2xl flex items-center justify-center shadow-xl pulse-gold">
-                                    <i class="fas fa-store text-2xl text-black"></i>
-                                </div>
-                                <div>
-                                    <h1 class="text-2xl font-bold gold-text">Ubicanegoleon</h1>
-                                    <p class="text-xs text-gray-400">León, Guanajuato</p>
-                                </div>
+        // ========== COMPONENTES ==========
+        const Header = () => `
+            <header class="glass sticky top-0 z-40 shadow-2xl">
+                <div class="max-w-7xl mx-auto px-6 py-4">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4 slide-in">
+                            <div class="w-12 h-12 gradient-gold rounded-2xl flex items-center justify-center shadow-lg">
+                                <i class="fas fa-store text-2xl text-black"></i>
                             </div>
-                            <nav class="flex items-center gap-3">
-                                ${appState.view !== 'login' && appState.view !== 'register' ? `
-                                    <button onclick="changeViewTo('list')" class="p-3 rounded-xl hover:bg-white/10 transition-all ${appState.view === 'list' ? 'bg-white/10 text-[#d4af37]' : 'text-gray-400'}">
-                                        <i class="fas fa-home text-lg"></i>
-                                    </button>
-                                ` : ''}
-                                ${appState.user ? `
-                                    <button onclick="createNewBusiness()" class="metallic-btn text-black px-6 py-3 rounded-xl font-bold shadow-xl hidden md:flex items-center gap-2">
-                                        <i class="fas fa-plus"></i><span>Nuevo Negocio</span>
-                                    </button>
-                                    <button onclick="createNewBusiness()" class="metallic-btn text-black p-3 rounded-xl shadow-xl md:hidden">
-                                        <i class="fas fa-plus"></i>
-                                    </button>
-                                    <div class="relative group">
-                                        <button class="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-white/10 transition-all">
-                                            <div class="w-10 h-10 gold-gradient rounded-full flex items-center justify-center text-black font-bold">
-                                                ${appState.user.email.charAt(0).toUpperCase()}
-                                            </div>
-                                            <i class="fas fa-chevron-down text-xs text-gray-400"></i>
-                                        </button>
-                                        <div class="absolute right-0 mt-2 w-56 glass-dark rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                                            <div class="p-4 border-b border-white/10">
-                                                <p class="text-sm font-semibold text-white">${appState.user.email}</p>
-                                                <p class="text-xs text-gray-400 mt-1">Usuario registrado</p>
-                                            </div>
-                                            <button onclick="logoutUser()" class="w-full px-4 py-3 text-left text-red-400 hover:bg-red-500/10 rounded-b-2xl transition-all flex items-center gap-3">
-                                                <i class="fas fa-sign-out-alt"></i><span class="font-medium">Cerrar sesión</span>
-                                            </button>
+                            <div>
+                                <h1 class="text-2xl font-bold bg-gradient-to-r from-yellow-400 to-yellow-600 bg-clip-text text-transparent">Ubicanegoleon</h1>
+                                <p class="text-xs text-gray-400">León, Guanajuato</p>
+                            </div>
+                        </div>
+                        
+                        <nav class="flex items-center gap-3">
+                            ${state.view !== 'login' && state.view !== 'register' ? `
+                                <button onclick="changeView('list')" class="p-3 rounded-xl transition-all ${state.view === 'list' ? 'bg-yellow-500/20 text-yellow-400' : 'text-gray-400 hover:bg-gray-800'}">
+                                    <i class="fas fa-home text-lg"></i>
+                                </button>
+                            ` : ''}
+                            
+                            ${state.user ? `
+                                <button onclick="createBusiness()" class="btn-gold text-black px-5 py-3 rounded-xl font-semibold shadow-lg hidden md:flex items-center gap-2">
+                                    <i class="fas fa-plus"></i><span>Registrar Negocio</span>
+                                </button>
+                                <button onclick="createBusiness()" class="btn-gold text-black p-3 rounded-xl shadow-lg md:hidden">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                                <div class="relative group">
+                                    <button class="flex items-center gap-2 px-4 py-2 rounded-xl hover:bg-gray-800 transition-all">
+                                        <div class="w-8 h-8 gradient-gold rounded-full flex items-center justify-center text-black font-bold text-sm">
+                                            ${state.user.email.charAt(0).toUpperCase()}
                                         </div>
+                                        <i class="fas fa-chevron-down text-xs text-gray-400"></i>
+                                    </button>
+                                    <div class="absolute right-0 mt-2 w-56 glass rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                                        <div class="p-4 border-b border-gray-700">
+                                            <p class="text-sm font-semibold text-white">${state.user.email}</p>
+                                            <p class="text-xs text-gray-400 mt-1">Usuario registrado</p>
+                                        </div>
+                                        <button onclick="logoutUser()" class="w-full px-4 py-3 text-left text-red-400 hover:bg-red-500/10 rounded-b-2xl transition-all flex items-center gap-3">
+                                            <i class="fas fa-sign-out-alt"></i><span class="font-medium">Cerrar sesión</span>
+                                        </button>
                                     </div>
-                                ` : `
-                                    ${appState.view !== 'login' && appState.view !== 'register' ? `
-                                        <button onclick="changeViewTo('login')" class="metallic-outline-btn px-6 py-2.5 rounded-xl font-bold transition-all text-[#d4af37]">Iniciar Sesión</button>
-                                    ` : ''}
-                                `}
-                            </nav>
-                        </div>
-                    </div>
-                </header>
-            `;
-        }
-
-        // Footer con contador de visitas
-        function FooterCounterComponent() {
-            return `
-                <div class="fixed bottom-0 left-0 right-0 glass-dark border-t border-white/10 py-5 z-40 shadow-2xl">
-                    <div class="max-w-7xl mx-auto px-6">
-                        <div class="flex items-center justify-center gap-4">
-                            <div class="w-12 h-12 gold-gradient rounded-full flex items-center justify-center pulse-gold shadow-xl">
-                                <i class="fas fa-users text-black text-lg"></i>
-                            </div>
-                            <p class="text-gray-300 font-medium">
-                                Tu negocio puede alcanzar <span class="gold-text font-bold text-2xl" id="view-counter">${appState.viewCount.toLocaleString()}</span> <span class="text-gray-400">usuarios</span>
-                            </p>
-                        </div>
+                                </div>
+                            ` : `
+                                ${state.view !== 'login' && state.view !== 'register' ? `
+                                    <button onclick="changeView('login')" class="px-5 py-2.5 text-yellow-400 hover:bg-yellow-500/10 rounded-xl font-semibold transition-all">Iniciar Sesión</button>
+                                ` : ''}
+                            `}
+                        </nav>
                     </div>
                 </div>
-            `;
-        }
+            </header>
+        `;
 
-        // Vista de Login/Register
-        function LoginViewComponent() {
-            const isLogin = appState.view === 'login';
+        const Footer = () => `
+            <div class="fixed bottom-0 left-0 right-0 glass border-t border-yellow-500/20 py-4 z-40 shadow-2xl">
+                <div class="max-w-7xl mx-auto px-6">
+                    <div class="flex items-center justify-center gap-3">
+                        <div class="w-10 h-10 gradient-gold rounded-full flex items-center justify-center pulse-slow shadow-lg">
+                            <i class="fas fa-users text-black"></i>
+                        </div>
+                        <p class="text-gray-300 font-medium">
+                            Tu negocio puede alcanzar <span class="text-yellow-400 font-bold text-lg" id="view-counter">${state.viewCount.toLocaleString()}</span> <span class="text-gray-500">usuarios</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const PasswordInput = (id, label, placeholder, required = false) => `
+            <div>
+                <label class="block text-sm font-semibold text-gray-300 mb-2">
+                    <i class="fas fa-lock text-yellow-400 mr-2"></i>${label}
+                </label>
+                <div class="relative">
+                    <input type="${state.showPassword[id] ? 'text' : 'password'}" id="${id}" ${required ? 'required' : ''} placeholder="${placeholder}" 
+                        class="w-full px-5 py-4 pr-12 rounded-xl border-2 border-gray-700 bg-gray-900/50 text-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 outline-none input-focus transition-all">
+                    <button type="button" onclick="togglePassword('${id}')" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-yellow-400 transition-colors">
+                        <i class="fas fa-eye${state.showPassword[id] ? '-slash' : ''}"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+
+        const LoginView = () => {
+            const isLogin = state.view === 'login';
             return `
                 <div class="min-h-screen flex items-center justify-center p-6">
                     <div class="max-w-md w-full">
-                        <div class="glass-dark p-10 rounded-3xl shadow-2xl fade-in border border-white/10">
+                        <div class="glass p-10 rounded-3xl shadow-2xl fade-in border-2 border-yellow-500/20">
                             <div class="text-center mb-8">
-                                <div class="w-24 h-24 gold-gradient rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl pulse-gold">
+                                <div class="w-24 h-24 gradient-gold rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl">
                                     <i class="fas fa-store text-4xl text-black"></i>
                                 </div>
-                                <h2 class="text-4xl font-bold gold-text mb-2">Ubicanegoleon</h2>
+                                <h2 class="text-4xl font-bold text-white mb-2">Ubicanegoleon</h2>
                                 <p class="text-gray-400">${isLogin ? 'Bienvenido de nuevo' : 'Crea tu cuenta gratis'}</p>
                             </div>
-                            <form onsubmit="handleAuthSubmit(event)" class="space-y-5">
+
+                            <form onsubmit="handleAuth(event)" class="space-y-5">
                                 <div>
                                     <label class="block text-sm font-semibold text-gray-300 mb-2">
-                                        <i class="fas fa-envelope text-[#d4af37] mr-2"></i>Correo electrónico
+                                        <i class="fas fa-envelope text-yellow-400 mr-2"></i>Correo electrónico
                                     </label>
-                                    <input type="email" id="email" required placeholder="tu@correo.com"
-                                        class="w-full px-5 py-4 rounded-xl input-focus outline-none transition-all">
+                                    <input type="email" id="email" required placeholder="tu@correo.com" 
+                                        class="w-full px-5 py-4 rounded-xl border-2 border-gray-700 bg-gray-900/50 text-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 outline-none input-focus transition-all">
                                 </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-300 mb-2">
-                                        <i class="fas fa-lock text-[#d4af37] mr-2"></i>Contraseña
-                                    </label>
-                                    <div class="relative">
-                                        <input type="password" id="password" required placeholder="••••••••"
-                                            class="w-full px-5 py-4 rounded-xl input-focus outline-none transition-all">
-                                        <i class="fas fa-eye password-toggle" id="password-icon" onclick="togglePassword('password')"></i>
-                                    </div>
-                                </div>
+                                
+                                ${PasswordInput('password', 'Contraseña', '••••••••', true)}
+                                
+                                ${!isLogin ? PasswordInput('confirmPassword', 'Confirmar Contraseña', '••••••••', true) : ''}
+
                                 ${isLogin ? `
                                     <div class="flex items-center justify-between">
                                         <label class="flex items-center gap-2 cursor-pointer group">
-                                            <input type="checkbox" id="keepLoggedIn" ${appState.keepLoggedIn ? 'checked' : ''}
-                                                onchange="appState.keepLoggedIn = this.checked"
-                                                class="w-5 h-5 rounded border-gray-600 text-[#d4af37]">
-                                            <span class="text-sm text-gray-400 group-hover:text-[#d4af37] transition-colors">Mantener sesión</span>
+                                            <input type="checkbox" id="keepLoggedIn" ${state.keepLoggedIn ? 'checked' : ''}
+                                                onchange="state.keepLoggedIn = this.checked"
+                                                class="w-5 h-5 rounded border-gray-600 bg-gray-800 text-yellow-500 focus:ring-yellow-500">
+                                            <span class="text-sm text-gray-400 group-hover:text-yellow-400 transition-colors">Mantener sesión</span>
                                         </label>
-                                        <button type="button" onclick="handleForgotPassword()" class="text-sm text-[#d4af37] hover:text-[#f9d67a] font-semibold">
+                                        <button type="button" onclick="handleForgotPassword()" class="text-sm text-yellow-400 hover:text-yellow-300 font-semibold">
                                             ¿Olvidaste tu contraseña?
                                         </button>
                                     </div>
                                 ` : ''}
-                                <button type="submit" class="w-full metallic-btn text-black py-4 rounded-xl font-bold shadow-xl">
+
+                                <button type="submit" class="w-full btn-gold text-black py-4 rounded-xl font-bold shadow-lg">
                                     <i class="fas fa-${isLogin ? 'sign-in-alt' : 'user-plus'} mr-2"></i>
                                     ${isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
                                 </button>
-                                <button type="button" onclick="changeViewTo('list')" class="w-full py-4 metallic-outline-btn text-[#d4af37] rounded-xl font-bold transition-all">
+
+                                <button type="button" onclick="changeView('list')" class="w-full py-4 bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 text-white rounded-xl font-bold transition-all">
                                     <i class="fas fa-eye mr-2"></i>Ver Directorio de Negocios
                                 </button>
-                                <div class="text-center pt-4 border-t border-white/10">
-                                    <button type="button" onclick="changeViewTo('${isLogin ? 'register' : 'login}')" class="text-gray-400 hover:text-[#d4af37] transition-colors">
-                                        ${isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'}
-                                        <span class="font-bold text-[#d4af37] ml-1">${isLogin ? 'Regístrate aquí' : 'Inicia sesión'}</span>
+
+                                <div class="text-center pt-4 border-t border-gray-700">
+                                    <button type="button" onclick="changeView('${isLogin ? 'register' : 'login'}')" class="text-gray-400 hover:text-yellow-400 transition-colors">
+                                        ${isLogin ? '¿No tienes cuenta?' : '¿Ya tienes cuenta?'} 
+                                        <span class="font-bold text-yellow-400 ml-1">${isLogin ? 'Regístrate aquí' : 'Inicia sesión'}</span>
                                     </button>
                                 </div>
                             </form>
@@ -662,176 +560,151 @@
                     </div>
                 </div>
             `;
-        }
+        };
 
-        // Vista de Formulario de Negocio
-        function FormViewComponent() {
-            const iconClass = appState.currentBusiness ? 'edit' : 'plus-circle';
-            const titleText = appState.currentBusiness ? 'Modificar Negocio' : 'Registrar Nuevo Negocio';
-            return `
-                <div class="pb-32 min-h-screen">
-                    ${HeaderComponent()}
-                    <div class="max-w-5xl mx-auto mt-10 px-6">
-                        <div class="glass-dark p-10 rounded-3xl shadow-2xl fade-in border border-white/10">
-                            <div class="mb-8">
-                                <h2 class="text-3xl font-bold gold-text mb-2">
-                                    <i class="fas fa-${iconClass} mr-3"></i>
-                                    ${titleText}
-                                </h2>
-                                <p class="text-gray-400">Completa la información de tu establecimiento</p>
-                            </div>
-                            <form onsubmit="handleBusinessSubmit(event)" class="space-y-8">
-                                <div class="glass p-6 rounded-2xl border-2 border-dashed border-[#d4af37]/30">
-                                    <label class="block text-sm font-bold text-gray-300 mb-3">
-                                        <i class="fas fa-image text-[#d4af37] mr-2"></i>Logotipo del Negocio
-                                    </label>
-                                    <div class="flex items-center gap-6">
-                                        ${appState.formData.logo_url ?
-                                            `<img src="${appState.formData.logo_url}" class="w-32 h-32 object-cover rounded-2xl shadow-lg border-4 border-[#d4af37]">`
-                                            :
-                                            `<div class="w-32 h-32 bg-black/30 rounded-2xl flex items-center justify-center border-2 border-dashed border-gray-600">
-                                                <i class="fas fa-image text-4xl text-gray-600"></i>
-                                            </div>`
-                                        }
-                                        <div class="flex-1">
-                                            <input type="file" id="logo" accept="image/*" onchange="handleLogoSelection(event)"
-                                                class="w-full p-3 border-2 border-white/10 rounded-xl bg-black/20 text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-[#d4af37] file:text-black file:font-semibold hover:file:bg-[#f9d67a]">
-                                            <p class="text-xs text-gray-500 mt-2">Formatos: JPG, PNG (Máx. 10MB)</p>
+        const FormView = () => `
+            <div class="pb-28 min-h-screen">
+                ${Header()}
+                <div class="max-w-4xl mx-auto mt-10 px-6">
+                    <div class="glass p-10 rounded-3xl shadow-xl fade-in border-2 border-yellow-500/20">
+                        <div class="mb-8">
+                            <h2 class="text-3xl font-bold text-white mb-2">
+                                <i class="fas fa-${state.currentBusiness ? 'edit' : 'plus-circle'} text-yellow-400 mr-3"></i>
+                                ${state.currentBusiness ? 'Modificar Negocio' : 'Registrar Nuevo Negocio'}
+                            </h2>
+                            <p class="text-gray-400">Completa la información de tu establecimiento</p>
+                        </div>
+
+                        <form onsubmit="handleBusinessSubmit(event)" class="space-y-8">
+                            <div class="glass-light p-6 rounded-2xl border-2 border-dashed border-yellow-500/30">
+                                <label class="block text-sm font-bold text-gray-300 mb-3">
+                                    <i class="fas fa-image text-yellow-400 mr-2"></i>Logotipo del Negocio
+                                </label>
+                                <div class="flex items-center gap-6">
+                                    ${state.formData.logo_url ? `
+                                        <img src="${state.formData.logo_url}" class="w-32 h-32 object-cover rounded-2xl shadow-lg border-4 border-gray-700">
+                                    ` : `
+                                        <div class="w-32 h-32 bg-gray-800 rounded-2xl flex items-center justify-center border-2 border-dashed border-gray-600">
+                                            <i class="fas fa-image text-4xl text-gray-600"></i>
                                         </div>
+                                    `}
+                                    <div class="flex-1">
+                                        <input type="file" id="logo" accept="image/*" onchange="handleLogo(event)"
+                                            class="w-full p-3 border-2 border-gray-700 bg-gray-900/50 text-gray-300 rounded-xl file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-yellow-500/20 file:text-yellow-400 file:font-semibold hover:file:bg-yellow-500/30">
+                                        <p class="text-xs text-gray-500 mt-2">Formatos: JPG, PNG (Máx. 10MB)</p>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                ${[
+                                    { id: 'name', label: 'Nombre del Negocio *', icon: 'store', placeholder: 'Ej: Café La Esquina', required: true },
+                                    { id: 'representative', label: 'Representante', icon: 'user-tie', placeholder: 'Nombre del dueño' },
+                                    { id: 'category', label: 'Giro del Negocio', icon: 'tag', placeholder: 'Ej: Restaurante' },
+                                    { id: 'address', label: 'Dirección *', icon: 'map-marker-alt', placeholder: 'Calle, número, colonia', required: true },
+                                    { id: 'phone', label: 'Teléfono *', icon: 'phone', placeholder: '+52 477 XXX XXXX', required: true },
+                                    { id: 'hours', label: 'Horario', icon: 'clock', placeholder: '9:00 AM - 7:00 PM' }
+                                ].map(f => `
                                     <div>
                                         <label class="block text-sm font-bold text-gray-300 mb-2">
-                                            <i class="fas fa-store text-[#d4af37] mr-2"></i>Nombre del Negocio *
+                                            <i class="fas fa-${f.icon} text-yellow-400 mr-2"></i>${f.label}
                                         </label>
-                                        <input type="text" id="name" required value="${appState.formData.name}" placeholder="Ej: Café La Esquina"
-                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
+                                        <input type="text" id="${f.id}" ${f.required ? 'required' : ''} value="${state.formData[f.id]}" placeholder="${f.placeholder}"
+                                            class="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900/50 text-white rounded-xl focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 outline-none input-focus">
                                     </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-gray-300 mb-2">
-                                            <i class="fas fa-user-tie text-[#d4af37] mr-2"></i>Representante
-                                        </label>
-                                        <input type="text" id="representative" value="${appState.formData.representative}" placeholder="Nombre del dueño"
-                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-gray-300 mb-2">
-                                            <i class="fas fa-tag text-[#d4af37] mr-2"></i>Giro del Negocio
-                                        </label>
-                                        <input type="text" id="category" value="${appState.formData.category}" placeholder="Ej: Restaurante, Ferretería"
-                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-gray-300 mb-2">
-                                            <i class="fas fa-map-marker-alt text-[#d4af37] mr-2"></i>Dirección *
-                                        </label>
-                                        <input type="text" id="address" required value="${appState.formData.address}" placeholder="Calle, número, colonia"
-                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-gray-300 mb-2">
-                                            <i class="fas fa-phone text-[#d4af37] mr-2"></i>Teléfono *
-                                        </label>
-                                        <input type="text" id="phone" required value="${appState.formData.phone}" placeholder="+52 477 XXX XXXX"
-                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
-                                        <p class="text-xs text-gray-500 mt-1">Debe iniciar con +52 477</p>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-gray-300 mb-2">
-                                            <i class="fas fa-clock text-[#d4af37] mr-2"></i>Horario de Atención
-                                        </label>
-                                        <input type="text" id="hours" value="${appState.formData.hours}" placeholder="Ej: 9:00 AM - 7:00 PM"
-                                            class="w-full px-4 py-3 rounded-xl input-focus outline-none">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-gray-300 mb-2">
-                                            <i class="fas fa-calendar-alt text-[#d4af37] mr-2"></i>Días de Atención
-                                        </label>
-                                        <select id="days" class="w-full px-4 py-3 rounded-xl input-focus outline-none cursor-pointer">
-                                            <option ${appState.formData.days === 'Lunes a Viernes' ? 'selected' : ''}>Lunes a Viernes</option>
-                                            <option ${appState.formData.days === 'Solo fines de semana' ? 'selected' : ''}>Solo fines de semana</option>
-                                            <option ${appState.formData.days === 'Todos los días de la semana' ? 'selected' : ''}>Todos los días de la semana</option>
-                                            <option ${appState.formData.days === 'Otro' ? 'selected' : ''}>Otro</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-bold text-gray-300 mb-2">
-                                            <i class="fas fa-map-pin text-[#d4af37] mr-2"></i>Ciudad
-                                        </label>
-                                        <input type="text" value="León, Guanajuato" disabled
-                                            class="w-full px-4 py-3 rounded-xl bg-black/30 text-gray-500 cursor-not-allowed border-2 border-white/5">
-                                    </div>
-                                </div>
+                                `).join('')}
+
                                 <div>
                                     <label class="block text-sm font-bold text-gray-300 mb-2">
-                                        <i class="fas fa-align-left text-[#d4af37] mr-2"></i>Descripción del Negocio
+                                        <i class="fas fa-calendar-alt text-yellow-400 mr-2"></i>Días de Atención
                                     </label>
-                                    <textarea id="description" rows="4" placeholder="Cuéntanos sobre tu negocio..."
-                                        class="w-full px-4 py-3 rounded-xl input-focus outline-none resize-none">${appState.formData.description}</textarea>
+                                    <select id="days" class="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900/50 text-white rounded-xl focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 outline-none cursor-pointer">
+                                        ${['Lunes a Viernes', 'Solo fines de semana', 'Todos los días de la semana', 'Otro'].map(d => 
+                                            `<option ${state.formData.days === d ? 'selected' : ''}>${d}</option>`
+                                        ).join('')}
+                                    </select>
                                 </div>
-                                <label class="flex items-start gap-4 p-5 glass rounded-2xl cursor-pointer border-2 border-[#d4af37]/30 hover:border-[#d4af37]/50 transition-all group">
-                                    <input type="checkbox" id="agreed" ${appState.formData.agreed ? 'checked' : ''}
-                                        class="w-6 h-6 mt-1 rounded-lg border-2 border-[#d4af37]/50 text-[#d4af37]">
-                                    <div class="flex-1">
-                                        <p class="font-semibold text-white group-hover:text-[#d4af37] transition-colors">
-                                            <i class="fas fa-shield-check mr-2"></i>Confirmo que los datos son correctos y reales
-                                        </p>
-                                        <p class="text-sm text-gray-400 mt-1">
-                                            La información será visible para todos los usuarios
-                                        </p>
-                                    </div>
-                                </label>
-                                <div class="flex gap-4 pt-4">
-                                    <button type="button" onclick="changeViewTo('list')"
-                                        class="flex-1 py-4 metallic-outline-btn text-gray-300 rounded-xl font-bold transition-all">
-                                        <i class="fas fa-times mr-2"></i>Cancelar
-                                    </button>
-                                    <button type="submit" class="flex-1 metallic-btn text-black py-4 rounded-xl font-bold shadow-xl">
-                                        <i class="fas fa-save mr-2"></i>Guardar Negocio
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    ${FooterCounterComponent()}
-                </div>
-            `;
-        }
 
-        // Vista de Lista de Negocios
-        function ListViewComponent() {
-            const filtered = appState.businesses.filter(b =>
-                b.name.toLowerCase().includes(appState.searchTerm.toLowerCase()) ||
-                (b.category && b.category.toLowerCase().includes(appState.searchTerm.toLowerCase()))
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-300 mb-2">
+                                        <i class="fas fa-map-pin text-yellow-400 mr-2"></i>Ciudad
+                                    </label>
+                                    <input type="text" value="León, Guanajuato" disabled 
+                                        class="w-full px-4 py-3 border-2 border-gray-700 bg-gray-800/50 text-gray-500 rounded-xl cursor-not-allowed">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-300 mb-2">
+                                    <i class="fas fa-align-left text-yellow-400 mr-2"></i>Descripción del Negocio
+                                </label>
+                                <textarea id="description" rows="4" placeholder="Cuéntanos sobre tu negocio..."
+                                    class="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900/50 text-white rounded-xl focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 outline-none input-focus resize-none">${state.formData.description}</textarea>
+                            </div>
+
+                            <label class="flex items-start gap-4 p-5 bg-yellow-500/10 rounded-2xl cursor-pointer border-2 border-yellow-500/30 hover:border-yellow-500/50 transition-all group">
+                                <input type="checkbox" id="agreed" ${state.formData.agreed ? 'checked' : ''} 
+                                    class="w-6 h-6 mt-1 rounded-lg border-2 border-yellow-500 bg-gray-900 text-yellow-500 focus:ring-yellow-500">
+                                <div class="flex-1">
+                                    <p class="font-semibold text-yellow-400 group-hover:text-yellow-300">
+                                        <i class="fas fa-shield-check mr-2"></i>Confirmo que los datos son correctos y reales
+                                    </p>
+                                    <p class="text-sm text-gray-400 mt-1">La información será visible para todos los usuarios</p>
+                                </div>
+                            </label>
+
+                            <div class="flex gap-4 pt-4">
+                                <button type="button" onclick="changeView('list')" 
+                                    class="flex-1 py-4 bg-gray-700 hover:bg-gray-600 text-white rounded-xl font-bold transition-all">
+                                    <i class="fas fa-times mr-2"></i>Cancelar
+                                </button>
+                                <button type="submit" class="flex-1 btn-gold text-black py-4 rounded-xl font-bold shadow-lg">
+                                    <i class="fas fa-save mr-2"></i>Guardar Negocio
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                ${Footer()}
+            </div>
+        `;
+
+        const ListView = () => {
+            const filtered = state.businesses.filter(b => 
+                b.name.toLowerCase().includes(state.searchTerm.toLowerCase()) ||
+                (b.category && b.category.toLowerCase().includes(state.searchTerm.toLowerCase()))
             );
+
             return `
-                <div class="pb-32 min-h-screen">
-                    ${HeaderComponent()}
-                    <div class="glass-dark border-b border-white/10 py-8 px-6 mb-10 shadow-lg">
+                <div class="pb-28 min-h-screen">
+                    ${Header()}
+                    
+                    <div class="glass border-b border-yellow-500/20 py-8 px-6 mb-10 shadow-lg">
                         <div class="max-w-7xl mx-auto">
-                            <div class="text-center mb-6">
-                                <h2 class="text-3xl font-bold gold-text mb-2">Descubre Negocios en León</h2>
+                            <div class="text-center mb-6 slide-in">
+                                <h2 class="text-3xl font-bold text-white mb-2">Descubre Negocios en León</h2>
                                 <p class="text-gray-400">Encuentra los mejores establecimientos cerca de ti</p>
                             </div>
+                            
                             <div class="relative max-w-2xl mx-auto fade-in">
-                                <i class="fas fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-[#d4af37] text-xl"></i>
-                                <input type="text" id="search" value="${appState.searchTerm}" onkeyup="handleSearchInput(event)"
-                                    placeholder="Busca por nombre o giro del negocio..."
-                                    class="w-full pl-16 pr-6 py-5 rounded-2xl input-focus outline-none text-lg shadow-xl">
+                                <i class="fas fa-search absolute left-6 top-1/2 transform -translate-y-1/2 text-gray-500 text-xl"></i>
+                                <input type="text" id="search" value="${state.searchTerm}" onkeyup="handleSearch(event)"
+                                    placeholder="Busca por nombre o giro del negocio..." 
+                                    class="w-full pl-16 pr-6 py-5 rounded-2xl bg-gray-900/50 border-2 border-gray-700 text-white focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 outline-none input-focus text-lg shadow-lg">
                             </div>
                         </div>
                     </div>
+
                     <main class="max-w-7xl mx-auto px-6">
                         ${filtered.length === 0 ? `
                             <div class="text-center py-20 fade-in">
-                                <div class="w-32 h-32 glass-dark rounded-full flex items-center justify-center mx-auto mb-6">
+                                <div class="w-32 h-32 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-6">
                                     <i class="fas fa-search text-6xl text-gray-600"></i>
                                 </div>
-                                <h3 class="text-2xl font-bold gold-text mb-2">No se encontraron negocios</h3>
+                                <h3 class="text-2xl font-bold text-white mb-2">No se encontraron negocios</h3>
                                 <p class="text-gray-400 mb-6">Intenta con otros términos de búsqueda</p>
-                                ${appState.user ? `
-                                    <button onclick="createNewBusiness()" class="metallic-btn text-black px-8 py-4 rounded-xl font-bold shadow-xl">
+                                ${state.user ? `
+                                    <button onclick="createBusiness()" class="btn-gold text-black px-8 py-4 rounded-xl font-bold shadow-lg">
                                         <i class="fas fa-plus mr-2"></i>Registra el primer negocio
                                     </button>
                                 ` : ''}
@@ -839,19 +712,19 @@
                         ` : `
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                                 ${filtered.map((b, i) => `
-                                    <div class="glass-dark rounded-3xl overflow-hidden shadow-2xl card-hover fade-in border border-white/10" style="animation-delay: ${i * 0.1}s">
-                                        <div class="h-64 overflow-hidden relative bg-gradient-to-br from-black/60 to-black/40">
-                                            <img src="${b.logo_url || 'https://via.placeholder.com/400x300/2d2d2d/d4af37?text=Sin+Logo'}"
+                                    <div class="glass rounded-3xl overflow-hidden shadow-lg card-hover fade-in border border-yellow-500/10" style="animation-delay: ${i * 0.1}s">
+                                        <div class="h-56 overflow-hidden relative bg-gradient-to-br from-gray-800 to-gray-900">
+                                            <img src="${b.logo_url || 'https://via.placeholder.com/400x300/1a1a1a/d4af37?text=Sin+Logo'}" 
                                                 class="w-full h-full object-cover"
-                                                onerror="this.src='https://via.placeholder.com/400x300/2d2d2d/d4af37?text=Negocio'">
+                                                onerror="this.src='https://via.placeholder.com/400x300/1a1a1a/d4af37?text=Negocio'">
                                             <div class="absolute top-4 right-4">
-                                                <span class="px-4 py-2 glass rounded-full text-xs font-bold text-[#d4af37] shadow-xl backdrop-blur-md border border-[#d4af37]/30">
+                                                <span class="px-4 py-2 glass-light rounded-full text-xs font-bold text-yellow-400 shadow-lg">
                                                     ${b.category || 'Negocio'}
                                                 </span>
                                             </div>
                                             ${b.rating > 0 ? `
                                                 <div class="absolute bottom-4 left-4">
-                                                    <div class="px-3 py-2 glass-dark rounded-xl backdrop-blur-md shadow-xl border border-white/10">
+                                                    <div class="px-3 py-2 glass-light rounded-xl shadow-lg">
                                                         <div class="flex items-center gap-2">
                                                             <i class="fas fa-star text-yellow-400"></i>
                                                             <span class="font-bold text-white">${b.rating}</span>
@@ -861,33 +734,32 @@
                                                 </div>
                                             ` : ''}
                                         </div>
+                                        
                                         <div class="p-6">
                                             <h3 class="text-xl font-bold text-white mb-3 line-clamp-1">${b.name}</h3>
+                                            
                                             <div class="space-y-2 mb-5">
                                                 <p class="text-sm text-gray-400 flex items-start gap-2">
-                                                    <i class="fas fa-map-marker-alt text-red-400 mt-1 flex-shrink-0"></i>
+                                                    <i class="fas fa-map-marker-alt text-yellow-400 mt-1 flex-shrink-0"></i>
                                                     <span class="line-clamp-2">${b.address}</span>
                                                 </p>
                                                 ${b.phone ? `
                                                     <p class="text-sm text-gray-400 flex items-center gap-2">
-                                                        <i class="fas fa-phone text-[#d4af37]"></i>
+                                                        <i class="fas fa-phone text-yellow-400"></i>
                                                         <span>${b.phone}</span>
                                                     </p>
                                                 ` : ''}
                                             </div>
-                                            <div class="flex gap-2">
-                                                <button onclick="viewBusinessDetail('${b.id}')"
-                                                    class="flex-1 metallic-btn text-black py-3 rounded-xl font-semibold shadow-xl text-sm">
-                                                    Detalles
+
+                                            <div class="flex gap-3">
+                                                <button onclick="viewBusiness('${b.id}')" 
+                                                    class="flex-1 py-3 gradient-gold text-black rounded-xl font-semibold hover:shadow-xl transition-all">
+                                                    Ver Detalles
                                                 </button>
-                                                <button onclick="contactBusiness('${b.phone}')"
-                                                    class="metallic-outline-btn px-4 py-3 rounded-xl transition-all">
-                                                    <i class="fas fa-phone text-[#d4af37]"></i>
-                                                </button>
-                                                ${appState.user && b.user_id === appState.user.id ? `
-                                                    <button onclick="editBusinessData('${b.id}')"
-                                                        class="glass px-4 py-3 rounded-xl hover:bg-white/10 transition-all border border-blue-400/30">
-                                                        <i class="fas fa-edit text-blue-400"></i>
+                                                ${state.user && b.user_id === state.user.id ? `
+                                                    <button onclick="editBusiness('${b.id}')" 
+                                                        class="p-3 bg-blue-500/20 text-blue-400 rounded-xl hover:bg-blue-500/30 transition-all">
+                                                        <i class="fas fa-edit"></i>
                                                     </button>
                                                 ` : ''}
                                             </div>
@@ -897,182 +769,182 @@
                             </div>
                         `}
                     </main>
-                    ${FooterCounterComponent()}
+                    ${Footer()}
                 </div>
             `;
-        }
+        };
 
-        // Vista de Perfil de Negocio
-        function ProfileViewComponent() {
-            const b = appState.currentBusiness;
+        const ProfileView = () => {
+            const b = state.currentBusiness;
             if (!b) return '';
-            const phoneForContact = b.phone || '';
-            const businessId = b.id || '';
-            const userId = appState.user ? appState.user.id : '';
-            const isOwner = appState.user && b.user_id === userId;
+
             return `
-                <div class="pb-32 min-h-screen">
-                    ${HeaderComponent()}
-                    <div class="max-w-6xl mx-auto mt-10 px-6">
-                        <div class="glass-dark rounded-3xl overflow-hidden shadow-2xl fade-in border border-white/10">
-                            <div class="h-80 bg-gradient-to-br from-[#d4af37] via-[#f9d67a] to-[#d4af37] relative overflow-hidden">
-                                <div class="absolute inset-0 bg-black/30"></div>
-                                <button onclick="changeViewTo('list')"
-                                    class="absolute top-6 left-6 w-14 h-14 glass-dark rounded-xl flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-xl backdrop-blur-md z-10 border border-white/20">
+                <div class="pb-28 min-h-screen">
+                    ${Header()}
+                    <div class="max-w-5xl mx-auto mt-10 px-6">
+                        <div class="glass rounded-3xl overflow-hidden shadow-2xl fade-in border-2 border-yellow-500/20">
+                            <div class="h-64 bg-gradient-to-br from-yellow-600 via-yellow-500 to-yellow-400 relative overflow-hidden">
+                                <div class="absolute inset-0 bg-black/20"></div>
+                                <button onclick="changeView('list')" 
+                                    class="absolute top-6 left-6 w-12 h-12 glass-light rounded-xl flex items-center justify-center text-white hover:bg-white/20 transition-all shadow-lg z-10">
                                     <i class="fas fa-arrow-left text-xl"></i>
                                 </button>
-                                <div class="absolute -bottom-24 left-10">
-                                    <div class="p-2 glass-dark rounded-3xl shadow-2xl backdrop-blur-md border border-white/20">
-                                        <img src="${b.logo_url || 'https://via.placeholder.com/200/2d2d2d/d4af37?text=Logo'}"
-                                            class="w-48 h-48 rounded-2xl object-cover"
-                                            onerror="this.src='https://via.placeholder.com/200/2d2d2d/d4af37?text=Logo'">
+                                
+                                <div class="absolute -bottom-20 left-8">
+                                    <div class="p-2 glass rounded-3xl shadow-2xl">
+                                        <img src="${b.logo_url || 'https://via.placeholder.com/160/d4af37/000000?text=Logo'}" 
+                                            class="w-40 h-40 rounded-2xl object-cover"
+                                            onerror="this.src='https://via.placeholder.com/160/d4af37/000000?text=Logo'">
                                     </div>
                                 </div>
                             </div>
-                            <div class="pt-32 px-10 pb-10">
-                                <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-10">
+
+                            <div class="pt-24 px-8 pb-10">
+                                <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6 mb-8">
                                     <div class="flex-1">
-                                        <h2 class="text-5xl font-bold gold-text mb-3">${b.name}</h2>
-                                        <p class="text-[#d4af37] font-semibold text-xl flex items-center gap-2">
+                                        <h2 class="text-4xl font-bold text-white mb-2">${b.name}</h2>
+                                        <p class="text-yellow-400 font-semibold text-lg flex items-center gap-2">
                                             <i class="fas fa-tag"></i>${b.category || 'Negocio'}
                                         </p>
                                     </div>
-                                    <div class="glass px-8 py-6 rounded-2xl text-center shadow-xl border border-white/10">
-                                        <div class="flex items-center gap-3 text-4xl font-bold text-white mb-2">
+                                    
+                                    <div class="glass px-6 py-4 rounded-2xl text-center shadow-lg border border-yellow-500/20">
+                                        <div class="flex items-center gap-2 text-3xl font-bold text-white mb-1">
                                             <i class="fas fa-star text-yellow-400"></i>
                                             <span>${b.rating || '0.0'}</span>
                                         </div>
                                         <p class="text-sm text-gray-400">${b.total_ratings || 0} reseñas</p>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-10">
+
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
                                     <div class="space-y-6">
                                         <section>
-                                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                                                <i class="fas fa-info-circle text-[#d4af37]"></i>Información de Contacto
+                                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                                                <i class="fas fa-info-circle mr-2"></i>Información de Contacto
                                             </h4>
-                                            <div class="space-y-4">
-                                                <div class="flex items-center gap-5 p-5 glass rounded-2xl hover:shadow-xl transition-all border border-white/10">
-                                                    <div class="w-14 h-14 gold-gradient rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg">
-                                                        <i class="fas fa-phone text-black text-xl"></i>
+                                            <div class="space-y-3">
+                                                <div class="flex items-center gap-4 p-4 glass-light rounded-2xl hover:shadow-md transition-all">
+                                                    <div class="w-12 h-12 bg-yellow-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
+                                                        <i class="fas fa-phone text-yellow-400 text-xl"></i>
                                                     </div>
                                                     <div class="flex-1">
-                                                        <p class="text-xs text-gray-500 mb-1 uppercase tracking-wide">Teléfono</p>
-                                                        <p class="font-semibold text-white text-lg">${b.phone || 'No disponible'}</p>
+                                                        <p class="text-xs text-gray-500 mb-1">Teléfono</p>
+                                                        <p class="font-semibold text-white">${b.phone}</p>
                                                     </div>
                                                 </div>
-                                                <div class="flex items-start gap-5 p-5 glass rounded-2xl hover:shadow-xl transition-all border border-white/10">
-                                                    <div class="w-14 h-14 bg-red-500/20 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg border border-red-500/30">
+                                                
+                                                <div class="flex items-start gap-4 p-4 glass-light rounded-2xl hover:shadow-md transition-all">
+                                                    <div class="w-12 h-12 bg-red-500/20 rounded-xl flex items-center justify-center flex-shrink-0">
                                                         <i class="fas fa-map-marked-alt text-red-400 text-xl"></i>
                                                     </div>
                                                     <div class="flex-1">
-                                                        <p class="text-xs text-gray-500 mb-1 uppercase tracking-wide">Dirección</p>
-                                                        <p class="font-semibold text-white leading-relaxed">${b.address}, León, Gto.</p>
+                                                        <p class="text-xs text-gray-500 mb-1">Dirección</p>
+                                                        <p class="font-semibold text-white">${b.address}, León, Gto.</p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </section>
+
                                         <section>
-                                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                                                <i class="fas fa-clock text-[#d4af37]"></i>Horario de Atención
+                                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                                                <i class="fas fa-clock mr-2"></i>Horario de Atención
                                             </h4>
-                                            <div class="glass p-6 rounded-2xl space-y-4 border border-white/10">
-                                                <div class="flex items-center justify-between py-3 border-b border-white/10">
-                                                    <span class="text-gray-400 font-medium flex items-center gap-2">
-                                                        <i class="fas fa-calendar-alt text-[#d4af37]"></i>Días
-                                                    </span>
+                                            <div class="glass-light p-6 rounded-2xl space-y-3">
+                                                <div class="flex items-center justify-between py-2 border-b border-gray-700">
+                                                    <span class="text-gray-400 font-medium">Días</span>
                                                     <span class="font-bold text-white">${b.days}</span>
                                                 </div>
-                                                <div class="flex items-center justify-between py-3">
-                                                    <span class="text-gray-400 font-medium flex items-center gap-2">
-                                                        <i class="fas fa-clock text-[#d4af37]"></i>Horario
-                                                    </span>
+                                                <div class="flex items-center justify-between py-2">
+                                                    <span class="text-gray-400 font-medium">Horario</span>
                                                     <span class="font-bold text-white">${b.hours || 'No especificado'}</span>
                                                 </div>
                                             </div>
                                         </section>
                                     </div>
+
                                     <div class="space-y-6">
                                         <section>
-                                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                                                <i class="fas fa-file-alt text-[#d4af37]"></i>Descripción
+                                            <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                                                <i class="fas fa-file-alt mr-2"></i>Descripción
                                             </h4>
-                                            <div class="glass p-6 rounded-2xl border-l-4 border-[#d4af37]">
-                                                <p class="text-gray-300 leading-relaxed">
-                                                    ${b.description || 'Sin descripción disponible.'}
-                                                </p>
+                                            <div class="glass-light p-6 rounded-2xl border-l-4 border-yellow-500">
+                                                <p class="text-gray-300 leading-relaxed">${b.description || 'Sin descripción disponible.'}</p>
                                             </div>
                                         </section>
+
                                         ${b.representative ? `
                                             <section>
-                                                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-                                                    <i class="fas fa-user-tie text-[#d4af37]"></i>Representante
+                                                <h4 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">
+                                                    <i class="fas fa-user-tie mr-2"></i>Representante
                                                 </h4>
-                                                <div class="glass p-6 rounded-2xl border border-white/10">
-                                                    <p class="font-semibold text-white text-lg">${b.representative}</p>
+                                                <div class="glass-light p-6 rounded-2xl">
+                                                    <p class="font-semibold text-white">${b.representative}</p>
                                                 </div>
                                             </section>
                                         ` : ''}
-                                        <div class="flex gap-3">
-                                            <button onclick="contactBusiness(\`${phoneForContact}\`)" class="flex-1 metallic-btn text-black py-4 rounded-xl font-bold shadow-xl">
-                                                <i class="fas fa-phone mr-2"></i>Contactar
+
+                                        ${state.user && b.user_id === state.user.id ? `
+                                            <button onclick="deleteBusiness('${b.id}')" 
+                                                class="w-full py-4 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white rounded-xl font-bold transition-all">
+                                                <i class="fas fa-trash mr-2"></i>Eliminar Negocio
                                             </button>
-                                            ${isOwner ? `
-                                                <button onclick="deleteBusinessData(\`${businessId}\`)"
-                                                    class="px-6 py-4 bg-red-500/20 text-red-400 rounded-xl font-bold hover:bg-red-500/30 transition-all border border-red-500/30">
-                                                    <i class="fas fa-trash"></i>
-                                                </button>
-                                            ` : ''}
-                                        </div>
+                                        ` : ''}
                                     </div>
                                 </div>
-                                ${appState.user ? `
-                                    <div class="glass p-8 rounded-3xl border-2 border-[#d4af37]/30 mb-10">
-                                        <h4 class="text-2xl font-bold gold-text mb-6 flex items-center gap-2">
-                                            <i class="fas fa-star"></i>Deja tu opinión
+
+                                ${state.user ? `
+                                    <div class="glass-light p-8 rounded-3xl border-2 border-yellow-500/20 mb-10">
+                                        <h4 class="text-2xl font-bold text-white mb-6">
+                                            <i class="fas fa-star text-yellow-400 mr-2"></i>Deja tu opinión
                                         </h4>
-                                        <form onsubmit="handleReviewSubmit(event, \`${businessId}\`)" class="space-y-6">
+                                        
+                                        <form onsubmit="handleReview(event, '${b.id}')" class="space-y-6">
                                             <div>
                                                 <label class="block text-sm font-bold text-gray-300 mb-3">Calificación</label>
                                                 <div class="flex gap-3">
                                                     ${[1,2,3,4,5].map(i => `
-                                                        <button type="button" onclick="selectRatingStars(${i})"
-                                                            class="star-btn text-5xl transition-all star-rating hover:scale-110" data-rating="${i}">
+                                                        <button type="button" onclick="selectRating(${i})" 
+                                                            class="star-btn text-5xl transition-all hover:scale-110" data-rating="${i}">
                                                             <span class="text-gray-600">★</span>
                                                         </button>
                                                     `).join('')}
                                                 </div>
                                             </div>
+                                            
                                             <div>
                                                 <label class="block text-sm font-bold text-gray-300 mb-3">Comentario (opcional)</label>
                                                 <textarea id="review-comment" rows="4" placeholder="Comparte tu experiencia..."
-                                                    class="w-full px-4 py-3 rounded-xl input-focus outline-none resize-none"></textarea>
+                                                    class="w-full px-4 py-3 border-2 border-gray-700 bg-gray-900/50 text-white rounded-xl focus:border-yellow-500 focus:ring-4 focus:ring-yellow-500/20 outline-none input-focus resize-none"></textarea>
                                             </div>
-                                            <button type="submit" class="metallic-btn text-black px-8 py-4 rounded-xl font-bold shadow-xl">
+                                            
+                                            <button type="submit" class="btn-gold text-black px-8 py-4 rounded-xl font-bold shadow-lg">
                                                 <i class="fas fa-paper-plane mr-2"></i>Publicar Reseña
                                             </button>
                                         </form>
                                     </div>
                                 ` : `
-                                    <div class="glass p-8 rounded-3xl text-center mb-10 border-2 border-white/10">
+                                    <div class="glass-light p-8 rounded-3xl text-center mb-10 border-2 border-gray-700">
                                         <i class="fas fa-lock text-4xl text-gray-600 mb-4"></i>
                                         <p class="text-gray-400 mb-4">Inicia sesión para dejar tu reseña</p>
-                                        <button onclick="changeViewTo('login')" class="metallic-btn text-black px-8 py-3 rounded-xl font-bold shadow-xl">
+                                        <button onclick="changeView('login')" class="btn-gold text-black px-8 py-3 rounded-xl font-bold shadow-lg">
                                             Iniciar Sesión
                                         </button>
                                     </div>
                                 `}
-                                <div class="border-t-2 border-white/10 pt-10">
-                                    <h4 class="text-2xl font-bold gold-text mb-6 flex items-center gap-2">
-                                        <i class="fas fa-comments"></i>Reseñas (${b.reviews?.length || 0})
+
+                                <div class="border-t-2 border-gray-800 pt-10">
+                                    <h4 class="text-2xl font-bold text-white mb-6">
+                                        <i class="fas fa-comments text-yellow-400 mr-2"></i>Reseñas (${b.reviews?.length || 0})
                                     </h4>
+                                    
                                     ${(b.reviews && b.reviews.length > 0) ? `
                                         <div class="space-y-4">
                                             ${b.reviews.map(r => `
-                                                <div class="glass p-6 rounded-2xl hover:shadow-xl transition-all border border-white/10">
+                                                <div class="glass-light p-6 rounded-2xl hover:shadow-lg transition-all">
                                                     <div class="flex items-start justify-between mb-3">
                                                         <div class="flex items-center gap-3">
-                                                            <div class="w-14 h-14 gold-gradient rounded-full flex items-center justify-center text-black font-bold text-xl shadow-lg">
+                                                            <div class="w-12 h-12 gradient-gold rounded-full flex items-center justify-center text-black font-bold text-lg">
                                                                 ${r.user_name.charAt(0).toUpperCase()}
                                                             </div>
                                                             <div>
@@ -1084,86 +956,93 @@
                                                             ${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}
                                                         </div>
                                                     </div>
-                                                    ${r.comment ? `<p class="text-gray-300 leading-relaxed pl-17">${r.comment}</p>` : ''}
+                                                    ${r.comment ? `<p class="text-gray-300 leading-relaxed pl-15">${r.comment}</p>` : ''}
                                                 </div>
                                             `).join('')}
                                         </div>
                                     ` : `
-                                        <div class="text-center py-12 glass rounded-2xl border border-white/10">
+                                        <div class="text-center py-12 glass-light rounded-2xl">
                                             <i class="fas fa-inbox text-6xl text-gray-700 mb-4"></i>
                                             <p class="text-gray-400">Aún no hay reseñas</p>
-                                            <p class="text-gray-500 text-sm mt-2">Sé el primero en compartir tu experiencia</p>
+                                            <p class="text-gray-600 text-sm mt-2">Sé el primero en compartir tu experiencia</p>
                                         </div>
                                     `}
                                 </div>
                             </div>
                         </div>
                     </div>
-                    ${FooterCounterComponent()}
+                    ${Footer()}
                 </div>
             `;
-        }
+        };
 
-        // ============================================
-        // MANEJADORES DE EVENTOS
-        // ============================================
-        
-        // Manejar envío de formulario de autenticación
-        async function handleAuthSubmit(e) {
+        // ========== EVENT HANDLERS ==========
+        async function handleAuth(e) {
             e.preventDefault();
             const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
-            if (appState.view === 'login') {
+            
+            if (state.view === 'login') {
                 const result = await loginUser(email, password);
                 if (result.success) {
-                    if (appState.keepLoggedIn) localStorage.setItem('keepLoggedIn', 'true');
-                    await loadAllBusinesses();
-                    appState.view = 'list';
-                    showNotification('¡Bienvenido!', 'success');
-                    renderApp();
+                    if (state.keepLoggedIn) localStorage.setItem('keepLoggedIn', 'true');
+                    await loadBusinesses();
+                    state.view = 'list';
+                    showModal('¡Bienvenido!', 'Has iniciado sesión correctamente', 'success');
+                    render();
                 } else {
-                    showNotification(result.message, 'error');
+                    const err = getAuthErrorMessage(result.error);
+                    showModal(err.title, err.message, err.type);
                 }
             } else {
-                const result = await registerUser(email, password);
-                showNotification(result.message, result.success ? 'success' : 'error');
+                const confirmPassword = document.getElementById('confirmPassword').value;
+                const result = await registerUser(email, password, confirmPassword);
                 if (result.success) {
-                    setTimeout(() => { appState.view = 'login'; renderApp(); }, 2000);
+                    const msg = result.requiresConfirmation 
+                        ? 'Cuenta creada exitosamente. Revisa tu correo para confirmar tu cuenta.'
+                        : 'Cuenta creada exitosamente. Ya puedes iniciar sesión.';
+                    showModal('¡Éxito!', msg, 'success');
+                    setTimeout(() => { state.view = 'login'; render(); }, 2000);
+                } else {
+                    const err = getAuthErrorMessage(result.error);
+                    showModal(err.title, err.message, err.type);
                 }
             }
         }
 
-        // Manejar olvido de contraseña
         async function handleForgotPassword() {
-            const email = prompt('Ingresa tu correo:');
+            const email = prompt('Ingresa tu correo electrónico:');
             if (!email) return;
             const result = await resetPassword(email);
-            showNotification(result.message, result.success ? 'success' : 'error');
+            if (result.success) {
+                showModal('Correo Enviado', 'Revisa tu bandeja de entrada para restablecer tu contraseña.', 'success');
+            } else {
+                const err = getAuthErrorMessage(result.error);
+                showModal(err.title, err.message, err.type);
+            }
         }
 
-        // Manejar selección de logo
-        function handleLogoSelection(e) {
+        function handleLogo(e) {
             const file = e.target.files[0];
             if (!file) return;
             if (file.size > 10 * 1024 * 1024) {
-                showNotification('El archivo no debe superar 10MB', 'error');
+                showModal('Archivo Muy Grande', 'El archivo no debe superar 10MB', 'error');
                 e.target.value = '';
                 return;
             }
-            appState.formData.logo = file;
+            state.formData.logo = file;
             const reader = new FileReader();
             reader.onload = (event) => {
-                appState.formData.logo_url = event.target.result;
-                renderApp();
+                state.formData.logo_url = event.target.result;
+                render();
             };
             reader.readAsDataURL(file);
         }
 
-        // Manejar envío de formulario de negocio
         async function handleBusinessSubmit(e) {
             e.preventDefault();
-            appState.formData = {
-                ...appState.formData,
+            state.formData = {
+                ...state.formData,
                 name: document.getElementById('name').value.trim(),
                 representative: document.getElementById('representative').value.trim(),
                 category: document.getElementById('category').value.trim(),
@@ -1174,61 +1053,55 @@
                 description: document.getElementById('description').value.trim(),
                 agreed: document.getElementById('agreed').checked
             };
-            await saveBusinessData(appState.formData);
+            await saveBusiness(state.formData);
         }
 
-        // Manejar envío de reseña
-        async function handleReviewSubmit(e, businessId) {
+        async function handleReview(e, businessId) {
             e.preventDefault();
-            if (appState.selectedRating === 0) {
-                showNotification('Selecciona una calificación', 'error');
+            if (state.selectedRating === 0) {
+                showModal('Calificación Requerida', 'Selecciona una calificación antes de publicar', 'warning');
                 return;
             }
             const comment = document.getElementById('review-comment').value.trim();
-            await saveReviewData(businessId, appState.selectedRating, comment);
+            await saveReview(businessId, state.selectedRating, comment);
         }
 
-        // Manejar búsqueda
-        function handleSearchInput(e) {
-            appState.searchTerm = e.target.value;
-            renderApp();
+        function handleSearch(e) {
+            state.searchTerm = e.target.value;
+            render();
         }
 
-        // Seleccionar calificación de estrellas
-        function selectRatingStars(rating) {
-            appState.selectedRating = rating;
+        function selectRating(rating) {
+            state.selectedRating = rating;
             document.querySelectorAll('.star-btn').forEach((btn, i) => {
                 const star = btn.querySelector('span');
                 star.className = i < rating ? 'text-yellow-400' : 'text-gray-600';
             });
         }
 
-        // Cambiar vista
-        function changeViewTo(view) {
-            appState.view = view;
-            if (view === 'list') appState.searchTerm = '';
-            renderApp();
+        function changeView(view) {
+            state.view = view;
+            if (view === 'list') state.searchTerm = '';
+            render();
         }
 
-        // Crear nuevo negocio
-        function createNewBusiness() {
-            if (!appState.user) {
-                showNotification('Debes iniciar sesión', 'error');
-                changeViewTo('login');
+        function createBusiness() {
+            if (!state.user) {
+                showModal('Sesión Requerida', 'Debes iniciar sesión para registrar un negocio', 'warning');
+                changeView('login');
                 return;
             }
-            resetFormData();
-            appState.currentBusiness = null;
-            appState.view = 'form';
-            renderApp();
+            resetForm();
+            state.currentBusiness = null;
+            state.view = 'form';
+            render();
         }
 
-        // Editar negocio
-        function editBusinessData(id) {
-            const business = appState.businesses.find(b => b.id === id);
+        function editBusiness(id) {
+            const business = state.businesses.find(b => b.id === id);
             if (!business) return;
-            appState.currentBusiness = business;
-            appState.formData = {
+            state.currentBusiness = business;
+            state.formData = {
                 name: business.name || '',
                 representative: business.representative || '',
                 category: business.category || '',
@@ -1241,86 +1114,53 @@
                 logo_url: business.logo_url || '',
                 agreed: false
             };
-            appState.view = 'form';
-            renderApp();
+            state.view = 'form';
+            render();
         }
 
-        // Ver detalles de negocio
-        function viewBusinessDetail(id) {
-            const business = appState.businesses.find(b => b.id === id);
+        function viewBusiness(id) {
+            const business = state.businesses.find(b => b.id === id);
             if (!business) return;
-            appState.currentBusiness = business;
-            appState.view = 'profile';
-            appState.selectedRating = 0;
-            renderApp();
+            state.currentBusiness = business;
+            state.view = 'profile';
+            state.selectedRating = 0;
+            render();
         }
 
-        // Renderizar aplicación
-        function renderApp() {
-            const app = document.getElementById('app');
-            let content = '';
-            switch(appState.view) {
-                case 'login':
-                case 'register':
-                    content = LoginViewComponent();
-                    break;
-                case 'form':
-                    content = FormViewComponent();
-                    break;
-                case 'list':
-                    content = ListViewComponent();
-                    break;
-                case 'profile':
-                    content = ProfileViewComponent();
-                    break;
-                default:
-                    content = LoginViewComponent();
-            }
-            app.innerHTML = content;
+        function render() {
+            const views = { login: LoginView, register: LoginView, form: FormView, list: ListView, profile: ProfileView };
+            document.getElementById('app').innerHTML = (views[state.view] || LoginView)();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ============================================
-        // INICIALIZACIÓN DE LA APLICACIÓN
-        // ============================================
-        
-        async function initializeApp() {
+        // ========== INICIALIZACIÓN ==========
+        (async function init() {
             try {
-                const { data: { session } } = await supabaseClient.auth.getSession();
+                const { data: { session } } = await supabase.auth.getSession();
                 if (session) {
-                    appState.user = session.user;
-                    appState.view = 'list';
-                    const keepLoggedIn = localStorage.getItem('keepLoggedIn');
-                    if (keepLoggedIn) appState.keepLoggedIn = true;
+                    state.user = session.user;
+                    state.view = 'list';
+                    if (localStorage.getItem('keepLoggedIn')) state.keepLoggedIn = true;
                 }
-                await loadAllBusinesses();
-                await updateViewCounterData();
-                renderApp();
-                
-                // Listener para cambios de autenticación
-                supabaseClient.auth.onAuthStateChange((event, session) => {
+                await loadBusinesses();
+                render();
+
+                supabase.auth.onAuthStateChange((event, session) => {
                     if (event === 'SIGNED_IN') {
-                        appState.user = session?.user || null;
-                        appState.view = 'list';
-                        renderApp();
+                        state.user = session?.user || null;
+                        state.view = 'list';
+                        showModal('¡Bienvenido!', 'Has iniciado sesión correctamente', 'success');
+                        render();
                     } else if (event === 'SIGNED_OUT') {
-                        appState.user = null;
-                        appState.view = 'login';
-                        renderApp();
+                        state.user = null;
+                        state.view = 'login';
+                        render();
                     }
                 });
             } catch (error) {
-                console.error('Error inicializando:', error);
-                showNotification('Error al iniciar', 'error');
+                showModal('Error de Inicialización', 'Ocurrió un error al cargar la aplicación', 'error');
             }
-        }
-
-        // Iniciar aplicación cuando el DOM esté listo
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', initializeApp);
-        } else {
-            initializeApp();
-        }
+        })();
     </script>
 </body>
 </html>
